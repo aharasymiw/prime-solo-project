@@ -17,7 +17,6 @@ import AboutPage from '../AboutPage/AboutPage';
 import BolusPage from '../BolusPage/BolusPage'
 import CalculatorPage from '../CalculatorPage/CalculatorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
-import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 
@@ -38,7 +37,7 @@ function App() {
         <Nav />
         <Switch>
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-          <Redirect exact from="/" to="/home" />
+          <Redirect exact from="/" to="/calculator" />
 
           {/* Visiting localhost:3000/about will show the about page. */}
           <Route
@@ -101,20 +100,6 @@ function App() {
               :
               // Otherwise, show the registration page
               <RegisterPage />
-            }
-          </Route>
-
-          <Route
-            exact
-            path="/home"
-          >
-            {user.uuid ?
-              // If the user is already logged in, 
-              // redirect them to the /calculator page
-              <Redirect to="/calculator" />
-              :
-              // Otherwise, show the Landing page
-              <LandingPage />
             }
           </Route>
 
