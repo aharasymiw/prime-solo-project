@@ -1,0 +1,6 @@
+
+input validation
+
+Calculate EttDepth by gestational age, and show both when there's a disagreement (though, by weight is more important).
+
+Show only all patients needing 'actual' values.
