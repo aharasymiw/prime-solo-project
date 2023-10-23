@@ -9,35 +9,6 @@ function CalculatorResults() {
     const newPatient = useSelector(store => store.newPatient);
     const user = useSelector(store => store.user);
 
-    function calculateIvIdEpinephrin(birth_weight) {
-        let iv = 0.02 * birth_weight;
-        let id = 0.2 * birth_weight;
-
-        return { iv, id };
-
-    };
-
-    function calculateEttEpinephrin(birth_weight) {
-        let et_mg = 0.1 * birth_weight;
-        let et_ml = 1 * birth_weight;
-
-        return { et_mg, et_ml };
-
-    }
-
-    function calculateMkd(birth_weight) {
-        let mkdSixty = 60 * birth_weight / 24;
-        let mkdEighty = 80 * birth_weight / 24;
-        let mkdHundred = 100 * birth_weight / 24;
-
-        return { mkdSixty, mkdEighty, mkdHundred };
-    }
-
-    let birth_weight = newPatient.birth_weight;
-
-    let epinephrin = { ...calculateIvIdEpinephrin(birth_weight), ...calculateEttEpinephrin(birth_weight) };
-    let mkd = calculateMkd(birth_weight);
-
     const savePatient = newRoute => {
         dispatch({ type: '', payload: newPatient });
         history.push(newRoute);
@@ -79,10 +50,10 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.ett_size_calc}</td>
-                        <td>{newPatient.ett_depth_weight_calc}</td>
-                        <td>{newPatient.uac_depth_calc}</td>
-                        <td>{newPatient.uvc_depth_calc}</td>
+                        <td>{newPatient.calculatedDataToSave.ett_size_calc}</td>
+                        <td>{newPatient.calculatedDataToSave.ett_depth_weight_calc}</td>
+                        <td>{newPatient.calculatedDataToSave.uac_depth_calc}</td>
+                        <td>{newPatient.calculatedDataToSave.uvc_depth_calc}</td>
                     </tr>
                 </tbody>
             </table>
@@ -99,9 +70,9 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{mkd.mkdSixty}</td>
-                        <td>{mkd.mkdEighty}</td>
-                        <td>{mkd.mkdHundred}</td>
+                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdSixty}</td>
+                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdEighty}</td>
+                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdHundred}</td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -118,11 +89,11 @@ function CalculatorResults() {
                 <tbody>
                     <tr>
                         <td>0.1-0.3 mL/kg</td>
-                        <td>{epinephrin.iv} / {epinephrin.id}</td>
+                        <td>0.5-1 mL/kg</td>
                     </tr>
                     <tr>
-                        <td>0.5-1 mL/kg</td>
-                        <td>{epinephrin.ml}</td>
+                        <td>{newPatient.calculatedDataToDisplay.iv_id_epi}</td>
+                        <td>{newPatient.calculatedDataToDisplay.ett_epi}</td>
                     </tr>
                 </tbody>
             </table>
@@ -170,6 +141,12 @@ function CalculatorResults() {
                         Login/Register
                     </button>
             }
+
+            <section className='footnote'>
+                <p>Epinephrine Concentration: 0.1 mg/mL = 1 mg / 10 mL</p>
+                <p>ETT size ≈ GA / 10</p>
+                <p>ETT Insertion ≈ weight in kg(s) + 6</p>
+            </section>
         </>
     );
 }

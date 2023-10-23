@@ -23,7 +23,6 @@ function CalculatorForm() {
         });
     };
 
-
     return (
         <form className="formPanel" onSubmit={calculate}>
 

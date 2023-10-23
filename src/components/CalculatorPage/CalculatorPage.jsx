@@ -13,7 +13,7 @@ function CalculatorPage() {
 
             <CalculatorForm />
 
-            {newPatient && newPatient.ett_size_calc && <CalculatorResults />}
+            {newPatient && newPatient.calculatedDataToSave && <CalculatorResults />}
         </div>
     );
 }

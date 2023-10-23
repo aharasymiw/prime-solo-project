@@ -1,21 +1,32 @@
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* calculateNewPatient(action) {
-    const newPatient = action.payload;
+    const patientInput = action.payload;
 
-    let birth_weight = newPatient.birth_weight;
-    let ga_weeks = newPatient.ga_weeks;
+    let birth_weight = patientInput.birth_weight;
+    let ga_weeks = patientInput.ga_weeks;
 
+    let birth_weight_in_kg = birth_weight / 1000;
 
-    let ett_size_calc = calculateEttSize(birth_weight);
-    let ett_depth_weight_calc = calculateEttInsertionDepthWeight(birth_weight);
-    let ett_depth_age_calc = calculateEttInsertionDepthAge(ga_weeks);
-    let uac_depth_calc = calculateUac(birth_weight);
-    let uvc_depth_calc = calculateUvc(uac_depth_calc);
+    console.log('birth_weight:', birth_weight, '(g)');
+    console.log('birth_weight_in_kg:', birth_weight_in_kg, '(kg)');
 
-    let thing = { ...newPatient, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc };
-    console.log("thing: ", thing);
-    yield put({ type: 'NEW_PATIENT_SET', payload: { ...newPatient, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc } });
+    let calculatedDataToSave = {
+        ...patientInput,
+        ett_size_calc: calculateEttSize(birth_weight),
+        ett_depth_weight_calc: calculateEttInsertionDepthWeight(birth_weight),
+        ett_depth_age_calc: calculateEttInsertionDepthAge(ga_weeks),
+        uac_depth_calc: calculateUac(birth_weight_in_kg),
+        uvc_depth_calc: calculateUvc(calculateUac(birth_weight_in_kg))
+    };
+
+    let calculatedDataToDisplay = {
+        iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
+        ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
+        mkd: calculateMkd(birth_weight_in_kg)
+    };
+
+    yield put({ type: 'NEW_PATIENT_SET', payload: { calculatedDataToSave, calculatedDataToDisplay } });
 }
 
 function* newPatientSaga() {
@@ -86,14 +97,40 @@ function calculateEttInsertionDepthAge(ga_weeks) {
     return ettInsertion;
 }
 
-function calculateUac(birth_weight) {
-    let uac = (birth_weight * 3) + 9;
+function calculateUac(birth_weight_in_kg) {
+    let uac = (birth_weight_in_kg * 3) + 9;
     return uac;
 }
 
 function calculateUvc(uac) {
     let uvc = (uac / 2) + 1;
     return uvc;
+}
+
+
+function calculateIvIdEpinephrin(birth_weight_in_kg) {
+    let ivid_epi_by_ml_min = Math.round(0.1 * birth_weight_in_kg * 1000) / 1000;
+    let ivid_epi_by_ml_max = Math.round(0.3 * birth_weight_in_kg * 1000) / 1000;
+
+    return `${ivid_epi_by_ml_min} - ${ivid_epi_by_ml_max} (mL)`;
+
+};
+
+function calculateEttEpinephrin(birth_weight_in_kg) {
+
+    let ett_epi_by_ml_min = Math.round(0.5 * birth_weight_in_kg * 1000) / 1000;
+    let ett_epi_by_ml_max = Math.round(1 * birth_weight_in_kg * 1000) / 1000;
+
+    return `${ett_epi_by_ml_min} - ${ett_epi_by_ml_max} (mL)`;
+
+}
+
+function calculateMkd(birth_weight_in_kg) {
+    let mkdSixty = 60 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
+    let mkdEighty = 80 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
+    let mkdHundred = 100 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
+
+    return { mkdSixty, mkdEighty, mkdHundred };
 }
 
 // TODO: 
