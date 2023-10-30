@@ -1,5 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import { round1, round2 } from '../../utils/utils'
 
 function* calculateNewPatient(action) {
     const patientInput = action.payload;
@@ -15,8 +16,8 @@ function* calculateNewPatient(action) {
     let calculatedDataToSave = {
         ...patientInput,
         ett_size_calc: calculateEttSize(birth_weight),
-        ett_depth_weight_calc: calculateEttInsertionDepthWeight(birth_weight),
-        ett_depth_age_calc: calculateEttInsertionDepthAge(ga_weeks),
+        ett_depth_weight_calc: calculateEttDepthWeight(birth_weight),
+        ett_depth_age_calc: calculateEttDepthAge(ga_weeks),
         uac_depth_calc: calculateUac(birth_weight_in_kg),
         uvc_depth_calc: calculateUvc(calculateUac(birth_weight_in_kg))
     };
@@ -24,7 +25,9 @@ function* calculateNewPatient(action) {
     let calculatedDataToDisplay = {
         iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
         ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
-        mkd: calculateMkd(birth_weight_in_kg)
+        mkd: calculateMkd(birth_weight_in_kg),
+        ns_bolus: calculateNsBolus(birth_weight_in_kg),
+        d10_bolus: calculateD10Bolus(birth_weight_in_kg)
     };
 
     yield put({ type: 'NEW_PATIENT_SET', payload: { calculatedDataToSave, calculatedDataToDisplay } });
@@ -60,10 +63,12 @@ function calculateEttSize(birth_weight) {
     return ettSize;
 }
 
-function calculateEttInsertionDepthWeight(birth_weight) {
+function calculateEttDepthWeight(birth_weight) {
     let ettInsertion;
 
-    if (birth_weight >= 3200) {
+    if (birth_weight >= 4200) {
+        ettInsertion = 10.0;
+    } else if (birth_weight >= 3200) {
         ettInsertion = 9.0;
     } else if (birth_weight >= 2500) {
         ettInsertion = 8.5;
@@ -79,12 +84,14 @@ function calculateEttInsertionDepthWeight(birth_weight) {
         ettInsertion = 6.0;
     } else if (birth_weight >= 500) {
         ettInsertion = 5.5;
+    } else {
+        ettInsertion = 5.5;
     }
 
     return ettInsertion;
 }
 
-function calculateEttInsertionDepthAge(ga_weeks) {
+function calculateEttDepthAge(ga_weeks) {
     let ettInsertion;
 
     if (ga_weeks >= 41) {
@@ -109,7 +116,7 @@ function calculateEttInsertionDepthAge(ga_weeks) {
 }
 
 function calculateUac(birth_weight_in_kg) {
-    let uac = (birth_weight_in_kg * 3) + 9;
+    let uac = birth_weight_in_kg * 3 + 9;
     return uac;
 }
 
@@ -120,31 +127,60 @@ function calculateUvc(uac) {
 
 
 function calculateIvIdEpinephrin(birth_weight_in_kg) {
-    let ivid_epi_by_ml_min = Math.round(0.1 * birth_weight_in_kg * 1000) / 1000;
-    let ivid_epi_by_ml_max = Math.round(0.3 * birth_weight_in_kg * 1000) / 1000;
+    let ividEpiMin = 0.1 * birth_weight_in_kg;
+    let ividEpiMinRounded = round2(ividEpiMin);
 
-    return `${ivid_epi_by_ml_min} - ${ivid_epi_by_ml_max} (mL)`;
+    let ividEpiMax = 0.3 * birth_weight_in_kg;
+    let ividEpiMaxRounded = round2(ividEpiMax);
+
+    return `${ividEpiMinRounded} - ${ividEpiMaxRounded} mL`;
 
 };
 
 function calculateEttEpinephrin(birth_weight_in_kg) {
 
-    let ett_epi_by_ml_min = Math.round(0.5 * birth_weight_in_kg * 1000) / 1000;
-    let ett_epi_by_ml_max = Math.round(1 * birth_weight_in_kg * 1000) / 1000;
+    let ettEpiMin = 0.5 * birth_weight_in_kg;
+    let ettEpiMinRounded = round2(ettEpiMin);
 
-    return `${ett_epi_by_ml_min} - ${ett_epi_by_ml_max} (mL)`;
+    let ettEpiMax = 1 * birth_weight_in_kg;
+    let ettEpiMaxRounded = round2(ettEpiMax);
+
+    return `${ettEpiMinRounded} - ${ettEpiMaxRounded} mL`;
 
 }
 
 function calculateMkd(birth_weight_in_kg) {
-    let mkdSixty = 60 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
-    let mkdEighty = 80 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
-    let mkdHundred = 100 * Math.round(birth_weight_in_kg / 24 * 1000) / 1000;
+    let mkdSixty = 60 * birth_weight_in_kg / 24;
+    let mkdEighty = 80 * birth_weight_in_kg / 24;
+    let mkdHundred = 100 * birth_weight_in_kg / 24;
 
     return { mkdSixty, mkdEighty, mkdHundred };
 }
+
+function calculateNsBolus(birth_weight_in_kg) {
+    let nsBolusMin = 10 * birth_weight_in_kg;
+    let nsBolusMinRounded = Math.round(nsBolusMin);
+
+    let nsBolusMax = 20 * birth_weight_in_kg;
+    let nsBolusMaxRounded = Math.round(nsBolusMax);
+
+    return `${nsBolusMinRounded} - ${nsBolusMaxRounded} mL`;
+}
+
+function calculateD10Bolus(birth_weight_in_kg) {
+
+    let d10BolusMin = 2 * birth_weight_in_kg;
+    let d10BolusMinRounded = round1(d10BolusMin);
+
+    let d10BolusMax = 4 * birth_weight_in_kg;
+    let d10BolusMaxRounded = round1(d10BolusMax);
+
+    return `${d10BolusMinRounded} - ${d10BolusMaxRounded} mL`;
+}
+
 
 // TODO: 
 // Check calculations, I was using Kg, now using g.
 // I may need to change the order of magnitude of some
 // of the numbers I'm adding or multiplying.
+

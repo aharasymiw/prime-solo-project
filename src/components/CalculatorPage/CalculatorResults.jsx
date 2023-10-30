@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { round1 } from '../../utils/utils'
 
 function CalculatorResults() {
     const dispatch = useDispatch();
@@ -8,6 +9,8 @@ function CalculatorResults() {
 
     const newPatient = useSelector(store => store.newPatient);
     const user = useSelector(store => store.user);
+
+    console.log('newPatient.calculatedDataToSave.ett_depth_weight_calc', newPatient.calculatedDataToSave.ett_depth_weight_calc);
 
     const savePatient = newRoute => {
         dispatch({ type: 'NEW_PATIENT_SAVE', payload: newPatient.calculatedDataToSave });
@@ -38,12 +41,11 @@ function CalculatorResults() {
 
     return (
         <>
-
             <table>
                 <thead>
                     <tr>
                         <th>ETT Size</th>
-                        <th>ETT Insertion</th>
+                        <th>ETT Depth</th>
                         <th>UAC Length</th>
                         <th>UVC Length</th>
                     </tr>
@@ -52,8 +54,8 @@ function CalculatorResults() {
                     <tr>
                         <td>{newPatient.calculatedDataToSave.ett_size_calc}</td>
                         <td>{newPatient.calculatedDataToSave.ett_depth_weight_calc}</td>
-                        <td>{newPatient.calculatedDataToSave.uac_depth_calc}</td>
-                        <td>{newPatient.calculatedDataToSave.uvc_depth_calc}</td>
+                        <td>{round1(newPatient.calculatedDataToSave.uac_depth_calc)}</td>
+                        <td>{round1(newPatient.calculatedDataToSave.uvc_depth_calc)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -61,20 +63,16 @@ function CalculatorResults() {
             <table>
                 <thead>
                     <tr>
-                        <th>60 mkd</th>
-                        <th>80 mkd</th>
-                        <th>100 mkd</th>
-                        <th>NS Bolus</th>
-                        <th>D10 Bolus</th>
+                        <th>60 mkd (mL/hr)</th>
+                        <th>80 mkd (mL/hr)</th>
+                        <th>100 mkd (mL/hr)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdSixty}</td>
-                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdEighty}</td>
-                        <td>{newPatient.calculatedDataToDisplay.mkd.mkdHundred}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdSixty)}</td>
+                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdEighty)}</td>
+                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdHundred)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -82,21 +80,32 @@ function CalculatorResults() {
             <table>
                 <thead>
                     <tr>
-                        <th>IV/ID Epi</th>
-                        <th>ETT Epi</th>
+                        <th><p className='.two-lines'>NS Bolus</p><p className='.two-lines'>10-20 mL/kg</p></th>
+                        <th><p className='.two-lines'>D10 Bolus</p><p className='.two-lines'>2-4 mL/kg</p></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>0.1-0.3 mL/kg</td>
-                        <td>0.5-1 mL/kg</td>
+                        <td>{newPatient.calculatedDataToDisplay.ns_bolus}</td>
+                        <td>{newPatient.calculatedDataToDisplay.d10_bolus}</td>
                     </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th><p className='.two-lines'>IV/ID Epi</p><p className='.two-lines'>0.1-0.3 mL/kg</p></th>
+                        <th><p className='.two-lines'>ETT Epi</p><p className='.two-lines'>0.5-1 mL/kg</p></th>
+                    </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>{newPatient.calculatedDataToDisplay.iv_id_epi}</td>
                         <td>{newPatient.calculatedDataToDisplay.ett_epi}</td>
                     </tr>
                 </tbody>
-            </table>
+            </table >
 
             <table>
                 <thead>

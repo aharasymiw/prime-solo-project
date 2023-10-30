@@ -146,6 +146,7 @@ th {
 
 tr {
   height: 2em;
+  width: 100%;
 }
 
 table,
@@ -158,6 +159,13 @@ th,
 td {
   text-align: left;
   padding-left: 1em;
+}
+
+p,
+.two-lines {
+  line-height: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 .footnote {

@@ -31,9 +31,9 @@ function CalculatorForm() {
                 <input
                     type="number"
                     name="birth_weight"
-                    min='500'
-                    max='4200'
-                    placeholder='Grams (500 - 4200)'
+                    min='300'
+                    max='5000'
+                    placeholder='Grams (300 - 5000)'
                     required
                     onChange={(event) => set_birth_weight(event.target.value)}
                 />
