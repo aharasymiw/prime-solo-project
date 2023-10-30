@@ -1,4 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 
 function* calculateNewPatient(action) {
     const patientInput = action.payload;
@@ -29,8 +30,18 @@ function* calculateNewPatient(action) {
     yield put({ type: 'NEW_PATIENT_SET', payload: { calculatedDataToSave, calculatedDataToDisplay } });
 }
 
+function* saveNewPatient(action) {
+    try {
+        yield axios.post('/api/patient/', action.payload);
+    } catch (error) {
+        console.log('Error saving the patient:', error);
+        yield put({ type: 'PATIENT_SAVE_FAILED' });
+    }
+}
+
 function* newPatientSaga() {
     yield takeLatest('NEW_PATIENT_CALCULATE', calculateNewPatient);
+    yield takeLatest('NEW_PATIENT_SAVE', saveNewPatient);
 }
 
 export default newPatientSaga;

@@ -17,6 +17,19 @@ const loginMessage = (state = '', action) => {
   }
 };
 
+const patientMessage = (state = '', action) => {
+  switch (action.type) {
+    case 'CLEAR_PATIENT_ERROR':
+      return '';
+    case 'PATIENT_INPUT_ERROR':
+      return 'Invalid Input!';
+    case 'PATIENT_SAVE_FAILED':
+      return "Oops! That didn't work. Try saving the patient again!";
+    default:
+      return state;
+  }
+};
+
 // registrationMessage holds the string that will display
 // on the registration screen if there's an error
 const registrationMessage = (state = '', action) => {
@@ -37,5 +50,6 @@ const registrationMessage = (state = '', action) => {
 // state.errors.loginMessage and state.errors.registrationMessage
 export default combineReducers({
   loginMessage,
+  patientMessage,
   registrationMessage,
 });

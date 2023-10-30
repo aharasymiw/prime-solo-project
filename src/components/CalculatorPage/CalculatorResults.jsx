@@ -10,7 +10,7 @@ function CalculatorResults() {
     const user = useSelector(store => store.user);
 
     const savePatient = newRoute => {
-        dispatch({ type: '', payload: newPatient });
+        dispatch({ type: 'NEW_PATIENT_SAVE', payload: newPatient.calculatedDataToSave });
         history.push(newRoute);
     }
 
