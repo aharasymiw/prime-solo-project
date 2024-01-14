@@ -110,6 +110,9 @@ input {
   margin: 5px;
   margin-bottom: 10px;
   font-size: 16px;
+  width: 60%;
+  align-items: center;
+  display: block;
 }
 
 table {
@@ -121,12 +124,6 @@ table,
 th,
 td {
   border: 1px solid;
-}
-
-input {
-  width: 60%;
-  align-items: center;
-  display: block;
 }
 
 table {

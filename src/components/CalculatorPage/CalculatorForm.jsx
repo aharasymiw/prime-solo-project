@@ -33,7 +33,7 @@ function CalculatorForm() {
                     name="birth_weight"
                     min='300'
                     max='5000'
-                    placeholder='Grams (300 - 5000)'
+                    placeholder='[300 - 5000]'
                     required
                     onChange={(event) => set_birth_weight(event.target.value)}
                 />
@@ -47,7 +47,7 @@ function CalculatorForm() {
                     name="ga_weeks"
                     min='21'
                     max='44'
-                    placeholder='Weeks (21 - 44)'
+                    placeholder='Weeks [21 - 44]'
                     required
                     onChange={(event) => set_ga_weeks(event.target.value)}
                 />
@@ -57,7 +57,7 @@ function CalculatorForm() {
                     name="ga_days"
                     min='0'
                     max='6'
-                    placeholder='Days (0 - 6)'
+                    placeholder='Days [0 - 6]'
                     onChange={(event) => set_ga_days(event.target.value)}
                 />
             </fieldset>

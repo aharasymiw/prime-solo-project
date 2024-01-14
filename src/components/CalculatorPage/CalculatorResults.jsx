@@ -35,7 +35,7 @@ function CalculatorResults() {
     // map int2,
     // ns_bolus_qty int2,
     // d10_bolus_given bool NOT NULL DEFAULT FALSE,
-    // init_blood_glucos int2,
+    // init_blood_glucose int2,
     // d10_bolus_qty int2,
     // notes text,
 

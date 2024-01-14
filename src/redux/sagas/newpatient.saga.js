@@ -10,9 +10,6 @@ function* calculateNewPatient(action) {
 
     let birth_weight_in_kg = birth_weight / 1000;
 
-    console.log('birth_weight:', birth_weight, '(g)');
-    console.log('birth_weight_in_kg:', birth_weight_in_kg, '(kg)');
-
     let calculatedDataToSave = {
         ...patientInput,
         ett_size_calc: calculateEttSize(birth_weight),
