@@ -10,8 +10,6 @@ function CalculatorResults() {
     const newPatient = useSelector(store => store.newPatient);
     const user = useSelector(store => store.user);
 
-    console.log('newPatient.calculatedDataToSave.ett_depth_weight_calc', newPatient.calculatedDataToSave.ett_depth_weight_calc);
-
     const savePatient = newRoute => {
         dispatch({ type: 'NEW_PATIENT_SAVE', payload: newPatient.calculatedDataToSave });
         history.push(newRoute);
@@ -117,9 +115,9 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{newPatient.calculatedDataToSave.bp_systolic}</td>
+                        <td>{newPatient.calculatedDataToSave.bp_diastolic}</td>
+                        <td>{newPatient.calculatedDataToSave.map}</td>
                     </tr>
                 </tbody>
             </table>
@@ -127,8 +125,6 @@ function CalculatorResults() {
 
             {
                 user.uuid ?
-                    // If the user is already logged in, 
-                    // Show a "Bolus Details" option
                     <button
                         type="button"
                         className="btn btn_asLink"
@@ -147,7 +143,7 @@ function CalculatorResults() {
                             savePatient('/login');
                         }}
                     >
-                        Login/Register
+                        Login
                     </button>
             }
 
@@ -166,3 +162,4 @@ export default CalculatorResults;
 // Check calculations, I was using Kg, now using g.
 // I may need to change the order of magnitude of some
 // of the numbers I'm adding or multiplying.
+// block all sensible routes when not logged in.

@@ -17,7 +17,7 @@ function BolusPage() {
     const [init_blood_glucose, set_init_blood_glucose] = useState(0);
     const [d10_bolus_qty, set_d10_bolus_qty] = useState(0);
 
-    const postIt = (event) => { // terrible name, but collect the inputs and send them where they need to go and update history to next view
+    const updatePatient = (event) => { // terrible name, but collect the inputs and send them where they need to go and update history to next view
         event.preventDefault();
 
         let payload = {
@@ -33,7 +33,7 @@ function BolusPage() {
 
         // This is a placeholder, need to actually do the data stuff.
         dispatch({
-            type: 'NEW_PATIENT_CALCULATE',
+            type: 'NEW_PATIENT_APPEND',
             payload: payload
         });
 
@@ -42,7 +42,7 @@ function BolusPage() {
     };
 
     return (
-        <form className="formPanel" onSubmit={postIt}>
+        <form className="formPanel" onSubmit={updatePatient}>
 
             <fieldset>
                 <legend>NS Bolus</legend>

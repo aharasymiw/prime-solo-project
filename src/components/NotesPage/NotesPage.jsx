@@ -1,35 +1,56 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 function NotesPage() {
 
-    const [note, set_note] = useState('');
+    const dispatch = useDispatch();
 
-    function saveNote() {
-        console.log("the note is:", note);
+    const [notes, set_notes] = useState('');
+
+    const saveNote = newRoute => {
+        dispatch({ type: 'NEW_PATIENT_SAVE', payload: notes });
+        history.push(newRoute);
     }
 
     return (
+        <>
+            <form className="formPanel" onSubmit={saveNote}>
 
-        <form className="formPanel" onSubmit={saveNote}>
+                <fieldset>
+                    <legend>Notes</legend>
 
-            <fieldset>
-                <legend>Notes</legend>
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        value={notes}
+                        onChange={(event) => set_notes(event.target.value)}
+                    />
 
-                <textarea
-                    id="notes"
-                    name="notes"
-                    value={note}
-                    onChange={(event) => set_note(event.target.value)}
-                />
-
-            </fieldset>
+                </fieldset>
+            </form>
 
             <div>
-                <input className="btn" type="submit" value="Save & New Entry" />
-                <input className="btn" type="submit" value="Save & View Summary" />
-            </div>
+                <button
+                    type="button"
+                    className="btn btn_asLink"
+                    onClick={() => {
+                        saveNote('/summary');
+                    }}
+                >
+                    Save & Summary
+                </button>
 
-        </form>
+                <button
+                    type="button"
+                    className="btn btn_asLink"
+                    onClick={() => {
+                        saveNote('/calculator');
+                    }}
+                >
+                    Save & New
+                </button>
+            </div>
+        </>
     )
 
 }
