@@ -13,7 +13,7 @@ function CalculatorPage() {
 
             <CalculatorForm />
 
-            {newPatient && newPatient.calculatedDataToSave && <CalculatorResults />}
+            {newPatient && newPatient.birth_weight && <CalculatorResults />}
         </div>
     );
 }

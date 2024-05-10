@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { round1 } from '../../utils/utils'
+import { round1 } from '../../fe_utils/fe_utils'
+import axios from 'axios';
+
 
 function CalculatorResults() {
     const dispatch = useDispatch();
@@ -10,32 +11,19 @@ function CalculatorResults() {
     const newPatient = useSelector(store => store.newPatient);
     const user = useSelector(store => store.user);
 
-    const savePatient = newRoute => {
-        dispatch({ type: 'NEW_PATIENT_SAVE', payload: newPatient.calculatedDataToSave });
-        history.push(newRoute);
-    }
+    const savePatient = () => {
 
-    // birth_weight int2 NOT NULL,
-    // ga_weeks int2 NOT NULL,
-    // ga_days int2 NOT NULL,
-    // ett_size_calc NUMERIC(7, 4) NOT NULL,
-    // ett_size_actual NUMERIC(7, 4),
-    // ett_depth_weight_calc NUMERIC(7, 4) NOT NULL,
-    // ett_depth_age_calc NUMERIC(7, 4) NOT NULL,
-    // ett_depth_actual NUMERIC(7, 4),
-    // uac_depth_calc NUMERIC(7, 4) NOT NULL,
-    // uac_depth_actual NUMERIC(7, 4),
-    // uvc_depth_calc NUMERIC(7, 4) NOT NULL,
-    // uvc_depth_actual NUMERIC(7, 4),
-    // ns_bolus_given bool NOT NULL DEFAULT FALSE,
-    // bp_systolic int2,
-    // bp_diastolic int2,
-    // map int2,
-    // ns_bolus_qty int2,
-    // d10_bolus_given bool NOT NULL DEFAULT FALSE,
-    // init_blood_glucose int2,
-    // d10_bolus_qty int2,
-    // notes text,
+        axios.post('/api/patients/', newPatient)
+            .then(result => {
+                // result.data = {patient_uuid, anonymous_id }
+                dispatch({ type: 'NEW_PATIENT_APPEND_CACHE', payload: result.data });
+            })
+            .catch(err => {
+                console.log('Error saving the patient', err);
+                alert('error saving the patient, please try reloading.');
+            });
+        ;
+    }
 
     return (
         <>
@@ -50,10 +38,10 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.calculatedDataToSave.ett_size_calc}</td>
-                        <td>{newPatient.calculatedDataToSave.ett_depth_weight_calc}</td>
-                        <td>{round1(newPatient.calculatedDataToSave.uac_depth_calc)}</td>
-                        <td>{round1(newPatient.calculatedDataToSave.uvc_depth_calc)}</td>
+                        <td>{newPatient.ett_size_calc}</td>
+                        <td>{newPatient.ett_depth_weight_calc}</td>
+                        <td>{round1(newPatient.uac_depth_calc)}</td>
+                        <td>{round1(newPatient.uvc_depth_calc)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -68,9 +56,9 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdSixty)}</td>
-                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdEighty)}</td>
-                        <td>{round1(newPatient.calculatedDataToDisplay.mkd.mkdHundred)}</td>
+                        <td>{round1(newPatient.mkdSixty)}</td>
+                        <td>{round1(newPatient.mkdEighty)}</td>
+                        <td>{round1(newPatient.mkdHundred)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -84,8 +72,8 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.calculatedDataToDisplay.ns_bolus}</td>
-                        <td>{newPatient.calculatedDataToDisplay.d10_bolus}</td>
+                        <td>{newPatient.ns_bolus}</td>
+                        <td>{newPatient.d10_bolus}</td>
                     </tr>
                 </tbody>
             </table>
@@ -99,8 +87,8 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.calculatedDataToDisplay.iv_id_epi}</td>
-                        <td>{newPatient.calculatedDataToDisplay.ett_epi}</td>
+                        <td>{newPatient.iv_id_epi}</td>
+                        <td>{newPatient.ett_epi}</td>
                     </tr>
                 </tbody>
             </table >
@@ -115,9 +103,9 @@ function CalculatorResults() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.calculatedDataToSave.bp_systolic}</td>
-                        <td>{newPatient.calculatedDataToSave.bp_diastolic}</td>
-                        <td>{newPatient.calculatedDataToSave.map}</td>
+                        <td>{newPatient.bp_systolic_calc}</td>
+                        <td>{newPatient.bp_diastolic_calc}</td>
+                        <td>{newPatient.map_calc}</td>
                     </tr>
                 </tbody>
             </table>
@@ -129,7 +117,8 @@ function CalculatorResults() {
                         type="button"
                         className="btn btn_asLink"
                         onClick={() => {
-                            savePatient('/bolus');
+                            { !newPatient.patient_uuid && savePatient(); }
+                            history.push('/bolus');
                         }}
                     >
                         Bolus Details
@@ -139,9 +128,9 @@ function CalculatorResults() {
                     <button
                         type="button"
                         className="btn btn_asLink"
-                        onClick={() => {
-                            savePatient('/login');
-                        }}
+                        onClick={() =>
+                            history.push('/login')
+                        }
                     >
                         Login
                     </button>

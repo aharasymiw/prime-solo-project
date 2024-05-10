@@ -1,77 +1,95 @@
--- Import dependency for using uuid
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Create a function to auto-update updated_at.
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Create user table
 CREATE TABLE "user" (
-	uuid UUID DEFAULT uuid_generate_v4 (),
+	uuid UUID DEFAULT gen_random_uuid(),
 	first_name VARCHAR (80) NOT NULL,
 	last_name VARCHAR (80) NOT NULL,
 	username VARCHAR (80) UNIQUE NOT NULL,
-    email VARCHAR (80) UNIQUE NOT NULL,
-    password VARCHAR (1000) NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT NOW(),
-    updated_at timestamptz NOT NULL DEFAULT NOW(),
+  email VARCHAR (80) UNIQUE NOT NULL,
+  password VARCHAR (1000) NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT NOW(),
+  updated_at timestamptz NOT NULL DEFAULT NOW(),
 	CONSTRAINT user_pk PRIMARY KEY (uuid)
 );
+
+-- Add a trigger to run the trigger_set_timestamp funciton, every time the user table is updated.
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON "user"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- Populate the user table with some default data, so we have some users
 INSERT INTO "user"
     ("uuid", "first_name", "last_name", "username", "email", "password")
-    VALUES
-	('dc39c393-a720-41df-b7f9-34f89c6c6524', 'A', 'Har', 'test', 'a@a.a', 'password'),
-	('3b30ce35-c459-403a-8b57-b3a304f50404', 'B', 'Har', 'test1', 'b@b.b', 'password'),
-	('a50b24a8-a94c-478b-9fb6-85714f2d664f', 'C', 'Har', 'test2', 'c@c.c', 'password');
-
--- Empty the user table
-DELETE FROM user;
--- Drop the user table
-DROP TABLE user;
+VALUES
+	('dc39c393-a720-41df-b7f9-34f89c6c6524', 'A', 'Har', 'test', 'a@a.a', '$2a$10$fV3AxpNF/vBkFeAYkAG5SO3Z4pBrDsQ0n4CV5tqmFEtI67ryr6bmS'),
+	('3b30ce35-c459-403a-8b57-b3a304f50404', 'B', 'Har', 'test1', 'b@b.b', '$2a$10$fV3AxpNF/vBkFeAYkAG5SO3Z4pBrDsQ0n4CV5tqmFEtI67ryr6bmS'),
+	('a50b24a8-a94c-478b-9fb6-85714f2d664f', 'C', 'Har', 'test2', 'c@c.c', '$2a$10$fV3AxpNF/vBkFeAYkAG5SO3Z4pBrDsQ0n4CV5tqmFEtI67ryr6bmS');
 
 -- Create patients table
 -- This is the sensative patient information
 CREATE TABLE "patients" (
-	uuid UUID DEFAULT uuid_generate_v4 (),
+	uuid UUID DEFAULT gen_random_uuid(),
 	anonymous_id varchar(8) UNIQUE NOT NULL,
 	birth_weight int2 NOT NULL,
+	birth_weight_actual int2,
 	ga_weeks int2 NOT NULL,
 	ga_days int2 NOT NULL,
 	ett_size_calc NUMERIC(7, 4) NOT NULL,
 	ett_size_actual NUMERIC(7, 4),
-    ett_depth_weight_calc NUMERIC(7, 4) NOT NULL,
-    ett_depth_age_calc NUMERIC(7, 4) NOT NULL,	
+  ett_depth_weight_calc NUMERIC(7, 4) NOT NULL,
+  ett_depth_age_calc NUMERIC(7, 4) NOT NULL,
 	ett_depth_actual NUMERIC(7, 4),
 	uac_depth_calc NUMERIC(7, 4) NOT NULL,
 	uac_depth_actual NUMERIC(7, 4),
 	uvc_depth_calc NUMERIC(7, 4) NOT NULL,
 	uvc_depth_actual NUMERIC(7, 4),
 	ns_bolus_given bool NOT NULL DEFAULT FALSE,
-	bp_systolic int2,
-	bp_diastolic int2,
-	map int2,
+	bp_systolic_calc int2,
+	bp_systolic_actual int2,
+	bp_diastolic_calc int2,
+	bp_diastolic_actual int2,
+	map_calc int2,
+	map_actual int2,
 	ns_bolus_qty int2,
 	d10_bolus_given bool NOT NULL DEFAULT FALSE,
 	init_blood_glucose int2,
 	d10_bolus_qty int2,
 	notes text,
 	managed_by UUID NOT NULL REFERENCES "user"(uuid) ON DELETE CASCADE,
-    created_by UUID NOT NULL REFERENCES "user"(uuid),
-    updated_by UUID NOT NULL REFERENCES "user"(uuid),
-    created_at timestamptz NOT NULL DEFAULT NOW(),
-    updated_at timestamptz NOT NULL DEFAULT NOW(),	
-	CONSTRAINT subjects_pk PRIMARY KEY (uuid)
+  created_by UUID NOT NULL REFERENCES "user"(uuid),
+  updated_by UUID NOT NULL REFERENCES "user"(uuid),
+  created_at timestamptz NOT NULL DEFAULT NOW(),
+  updated_at timestamptz NOT NULL DEFAULT NOW(),
+	CONSTRAINT patients_pk PRIMARY KEY (uuid),
+	UNIQUE (uuid, managed_by)
 );
 
+-- Add a trigger to run the trigger_set_timestamp funciton, every time the patients table is updated.
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON "patients"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- Populate the patients table with some default data, so we have some patients
 INSERT INTO "patients"
-("anonymous_id", "birth_weight", "ga_weeks", "ga_days", "ett_size_calc", "ett_depth_weight_calc", "ett_depth_age_calc", "uac_depth_calc", "uvc_depth_calc", "managed_by", "created_by", "updated_by")
+  ("anonymous_id", "birth_weight", "ga_weeks", "ga_days", "ett_size_calc", "ett_depth_weight_calc", "ett_depth_age_calc", "uac_depth_calc", "uvc_depth_calc", "managed_by", "created_by", "updated_by")
 VALUES
-('A0001', '1700', '23', '6', '3', '7.5', '7.5', '14.1', '8.05', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524'),
-('A0002', '1500', '21', '5', '3', '7.5', '7.5', '13.5', '7.75', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524'),
-('B0001', '1500', '21', '5', '3', '7.5', '7.5', '13.5', '7.75', '3b30ce35-c459-403a-8b57-b3a304f50404', '3b30ce35-c459-403a-8b57-b3a304f50404', '3b30ce35-c459-403a-8b57-b3a304f50404');
+  ('A0001', '1700', '23', '6', '3', '7.5', '7.5', '14.1', '8.05', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524'),
+  ('A0002', '1500', '21', '5', '3', '7.5', '7.5', '13.5', '7.75', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524', 'dc39c393-a720-41df-b7f9-34f89c6c6524'),
+  ('B0001', '1500', '21', '5', '3', '7.5', '7.5', '13.5', '7.75', '3b30ce35-c459-403a-8b57-b3a304f50404', '3b30ce35-c459-403a-8b57-b3a304f50404', '3b30ce35-c459-403a-8b57-b3a304f50404');
 
-DELETE FROM patients;
-
-DROP TABLE patients;
-
+-- Index patients by the user who manages them, because we'll be looking that up a lot
+CREATE INDEX IF NOT EXISTS idx_patients_managed_by
+ON patients(managed_by);
 
 -- -- Import dependency for using uuid
 -- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

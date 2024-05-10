@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
-import { round1, round2 } from '../../utils/utils'
+import { round1, round2 } from '../../fe_utils/fe_utils'
 
 function* newPatientCalculate(action) {
     const patientInput = action.payload;
@@ -10,41 +9,78 @@ function* newPatientCalculate(action) {
 
     let birth_weight_in_kg = birth_weight / 1000;
 
-    let calculatedDataToSave = {
+    let calculatedDataToCache = {
         ...patientInput,
         ett_size_calc: calculateEttSize(birth_weight),
         ett_depth_weight_calc: calculateEttDepthWeight(birth_weight),
         ett_depth_age_calc: calculateEttDepthAge(ga_weeks),
         uac_depth_calc: calculateUac(birth_weight_in_kg),
         uvc_depth_calc: calculateUvc(calculateUac(birth_weight_in_kg)),
-        bp_systolic: calculateBpSystolic(ga_weeks),
-        bp_diastolic: calculateBpDiastolic(ga_weeks),
-        map: calculateMap(ga_weeks)
-    };
-
-    let calculatedDataToDisplay = {
+        bp_systolic_calc: calculateBpSystolic(ga_weeks),
+        bp_diastolic_calc: calculateBpDiastolic(ga_weeks),
+        map_calc: calculateMap(ga_weeks),
         iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
         ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
-        mkd: calculateMkd(birth_weight_in_kg),
+        mkdSixty: calculateMkdSixty(birth_weight_in_kg),
+        mkdEighty: calculateMkdEighty(birth_weight_in_kg),
+        mkdHundred: calculateMkdHundred(birth_weight_in_kg),
         ns_bolus: calculateNsBolus(birth_weight_in_kg),
         d10_bolus: calculateD10Bolus(birth_weight_in_kg)
     };
 
-    yield put({ type: 'NEW_PATIENT_SET', payload: { calculatedDataToSave, calculatedDataToDisplay } });
+    yield put({ type: 'NEW_PATIENT_SET_CACHE', payload: calculatedDataToCache });
 }
 
-function* newPatientSave(action) {
-    try {
-        yield axios.post('/api/patient/', action.payload);
-    } catch (error) {
-        console.log('Error saving the patient:', error);
-        yield put({ type: 'PATIENT_SAVE_FAILED' });
-    }
+function* existingPatientCalculate(action) {
+    const patientData = action.payload;
+
+    let birth_weight_in_kg = patientData.birth_weight / 1000;
+
+    let savedDataToCache = {
+        uuid: patientData.uuid,
+        anonymous_id: patientData.anonymous_id,
+        birth_weight: patientData.birth_weight,
+        birth_weight_actual: patientData.birth_weight_actual,
+        ga_weeks: patientData.ga_weeks,
+        ga_days: patientData.ga_days,
+        ett_size_calc: parseFloat(patientData.ett_size_calc),
+        ett_size_actual: parseFloat(patientData.ett_size_actual),
+        ett_depth_weight_calc: parseFloat(patientData.ett_depth_weight_calc),
+        ett_depth_age_calc: parseFloat(patientData.ett_depth_age_calc),
+        ett_depth_actual: parseFloat(patientData.ett_depth_actual),
+        uac_depth_calc: parseFloat(patientData.uac_depth_calc),
+        uac_depth_actual: parseFloat(patientData.uac_depth_actual),
+        uvc_depth_calc: parseFloat(patientData.uvc_depth_calc),
+        uvc_depth_actual: parseFloat(patientData.uvc_depth_actual),
+        ns_bolus_given: patientData.ns_bolus_given,
+        bp_systolic_calc: patientData.bp_systolic_calc,
+        bp_systolic_actual: patientData.bp_systolic_actual,
+        bp_diastolic_calc: patientData.bp_diastolic_calc,
+        bp_diastolic_actual: patientData.bp_diastolic_actual,
+        map_calc: patientData.map_calc,
+        map_actual: patientData.map_actual,
+        ns_bolus_qty: patientData.ns_bolus_qty,
+        d10_bolus_given: patientData.d10_bolus_given,
+        init_blood_glucose: patientData.init_blood_glucose,
+        d10_bolus_qty: patientData.d10_bolus_qty,
+        notes: patientData.notes,
+        iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
+        ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
+        mkdSixty: calculateMkdSixty(birth_weight_in_kg),
+        mkdEighty: calculateMkdEighty(birth_weight_in_kg),
+        mkdHundred: calculateMkdHundred(birth_weight_in_kg),
+        ns_bolus: calculateNsBolus(birth_weight_in_kg),
+        d10_bolus: calculateD10Bolus(birth_weight_in_kg)
+    };
+
+    yield put({ type: 'NEW_PATIENT_SET_CACHE', payload: savedDataToCache });
 }
+
 
 function* newPatientSaga() {
     yield takeLatest('NEW_PATIENT_CALCULATE', newPatientCalculate);
-    yield takeLatest('NEW_PATIENT_SAVE', newPatientSave);
+    yield takeLatest('EXISTING_PATIENT_CALCULATE', existingPatientCalculate);
+
 }
 
 export default newPatientSaga;
@@ -149,13 +185,19 @@ function calculateEttEpinephrin(birth_weight_in_kg) {
 
 }
 
-function calculateMkd(birth_weight_in_kg) {
-    let mkdSixty = 60 * birth_weight_in_kg / 24;
-    let mkdEighty = 80 * birth_weight_in_kg / 24;
-    let mkdHundred = 100 * birth_weight_in_kg / 24;
-
-    return { mkdSixty, mkdEighty, mkdHundred };
+function calculateMkdSixty(birth_weight_in_kg) {
+    return 60 * birth_weight_in_kg / 24;
 }
+
+function calculateMkdEighty(birth_weight_in_kg) {
+    return 80 * birth_weight_in_kg / 24;
+}
+
+function calculateMkdHundred(birth_weight_in_kg) {
+    return 100 * birth_weight_in_kg / 24;
+}
+
+
 
 function calculateNsBolus(birth_weight_in_kg) {
     let nsBolusMin = 10 * birth_weight_in_kg;
