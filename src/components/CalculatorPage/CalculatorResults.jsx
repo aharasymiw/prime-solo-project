@@ -48,13 +48,15 @@ function CalculatorResults() {
             <table>
                 <thead>
                     <tr>
-                        <th>60 mkd (mL/hr)</th>
-                        <th>80 mkd (mL/hr)</th>
-                        <th>100 mkd (mL/hr)</th>
+                        <th>rate</th>
+                        <th>60 mkd</th>
+                        <th>80 mkd</th>
+                        <th>100 mkd</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>mL/hr</td>
                         <td>{round1(newPatient.mkdSixty)}</td>
                         <td>{round1(newPatient.mkdEighty)}</td>
                         <td>{round1(newPatient.mkdHundred)}</td>
@@ -96,10 +98,10 @@ function CalculatorResults() {
                 <thead>
                     <tr>
                         <th>%ile</th>
-                        <th>Systolic</th>
-                        <th>Diastolic</th>
+                        <th>SBP</th>
+                        <th>DBP</th>
                         <th>MAP</th>
-                        <th>Pulse Pressure</th>
+                        <th>PP</th>
                     </tr>
                 </thead>
                 <tbody>
