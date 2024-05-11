@@ -16,9 +16,15 @@ function* newPatientCalculate(action) {
         ett_depth_age_calc: calculateEttDepthAge(ga_weeks),
         uac_depth_calc: calculateUac(birth_weight_in_kg),
         uvc_depth_calc: calculateUvc(calculateUac(birth_weight_in_kg)),
-        bp_systolic_calc: calculateBpSystolic(ga_weeks),
-        bp_diastolic_calc: calculateBpDiastolic(ga_weeks),
-        map_calc: calculateMap(ga_weeks),
+        bp_systolic_calc_bottom: calculateBpSystolicBottom(ga_weeks),
+        bp_systolic_calc_mid: calculateBpSystolicMid(ga_weeks),
+        bp_systolic_calc_top: calculateBpSystolicTop(ga_weeks),
+        bp_diastolic_calc_bottom: calculateBpDiastolicBottom(ga_weeks),
+        bp_diastolic_calc_mid: calculateBpDiastolicMid(ga_weeks),
+        bp_diastolic_calc_top: calculateBpDiastolicTop(ga_weeks),
+        map_calc_bottom: calculateMapBottom(ga_weeks),
+        map_calc_mid: calculateMapMid(ga_weeks),
+        map_calc_top: calculateMapTop(ga_weeks),
         iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
         ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
         mkdSixty: calculateMkdSixty(birth_weight_in_kg),
@@ -53,11 +59,17 @@ function* existingPatientCalculate(action) {
         uvc_depth_calc: parseFloat(patientData.uvc_depth_calc),
         uvc_depth_actual: parseFloat(patientData.uvc_depth_actual),
         ns_bolus_given: patientData.ns_bolus_given,
-        bp_systolic_calc: patientData.bp_systolic_calc,
+        bp_systolic_calc_bottom: patientData.bp_systolic_calc_bottom,
+        bp_systolic_calc_mid: patientData.bp_systolic_calc_mid,
+        bp_systolic_calc_top: patientData.bp_systolic_calc_top,
         bp_systolic_actual: patientData.bp_systolic_actual,
-        bp_diastolic_calc: patientData.bp_diastolic_calc,
+        bp_diastolic_calc_bottom: patientData.bp_diastolic_calc_bottom,
+        bp_diastolic_calc_mid: patientData.bp_diastolic_calc_mid,
+        bp_diastolic_calc_top: patientData.bp_diastolic_calc_top,
         bp_diastolic_actual: patientData.bp_diastolic_actual,
-        map_calc: patientData.map_calc,
+        map_calc_bottom: patientData.map_calc_bottom,
+        map_calc_mid: patientData.map_calc_mid,
+        map_calc_top: patientData.map_calc_top,
         map_actual: patientData.map_actual,
         ns_bolus_qty: patientData.ns_bolus_qty,
         d10_bolus_given: patientData.d10_bolus_given,
@@ -197,8 +209,6 @@ function calculateMkdHundred(birth_weight_in_kg) {
     return 100 * birth_weight_in_kg / 24;
 }
 
-
-
 function calculateNsBolus(birth_weight_in_kg) {
     let nsBolusMin = 10 * birth_weight_in_kg;
     let nsBolusMinRounded = Math.round(nsBolusMin);
@@ -220,227 +230,677 @@ function calculateD10Bolus(birth_weight_in_kg) {
     return `${d10BolusMinRounded} - ${d10BolusMaxRounded} mL`;
 }
 
-function calculateBpSystolic(ga_weeks) {
+function calculateBpSystolicBottom(ga_weeks) {
 
-    let bp_systolic;
+    let bp_diastolic_bottom;
 
     switch (ga_weeks) {
         case 22:
-            bp_systolic = 22;
+            bp_diastolic_bottom = 22;
             break;
         case 23:
-            bp_systolic = 23;
+            bp_diastolic_bottom = 23;
             break;
         case 24:
-            bp_systolic = 25;
+            bp_diastolic_bottom = 25;
             break;
         case 25:
-            bp_systolic = 26;
+            bp_diastolic_bottom = 26;
             break;
         case 26:
-            bp_systolic = 27;
+            bp_diastolic_bottom = 27;
             break;
         case 27:
-            bp_systolic = 29;
+            bp_diastolic_bottom = 29;
             break;
         case 28:
-            bp_systolic = 31;
+            bp_diastolic_bottom = 31;
             break;
         case 29:
-            bp_systolic = 33;
+            bp_diastolic_bottom = 33;
             break;
         case 30:
-            bp_systolic = 35;
+            bp_diastolic_bottom = 35;
             break;
         case 31:
-            bp_systolic = 36;
+            bp_diastolic_bottom = 36;
             break;
         case 32:
-            bp_systolic = 37;
+            bp_diastolic_bottom = 37;
             break;
         case 33:
-            bp_systolic = 38;
+            bp_diastolic_bottom = 38;
             break;
         case 34:
-            bp_systolic = 40;
+            bp_diastolic_bottom = 40;
             break;
         case 35:
-            bp_systolic = 41;
+            bp_diastolic_bottom = 41;
             break;
         case 36:
-            bp_systolic = 42;
+            bp_diastolic_bottom = 42;
             break;
         case 37:
-            bp_systolic = 44;
+            bp_diastolic_bottom = 44;
             break;
         case 38:
-            bp_systolic = 46;
+            bp_diastolic_bottom = 46;
             break;
         case 39:
-            bp_systolic = 47;
+            bp_diastolic_bottom = 47;
             break;
         case 40:
-            bp_systolic = 48;
+            bp_diastolic_bottom = 48;
             break;
         case 41:
-            bp_systolic = 50;
+            bp_diastolic_bottom = 50;
             break;
         case 42:
-            bp_systolic = 51;
+            bp_diastolic_bottom = 51;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return bp_systolic;
+    return bp_diastolic_bottom;
 }
 
-function calculateBpDiastolic(ga_weeks) {
+function calculateBpSystolicMid(ga_weeks) {
 
-    let bp_diastolic;
+    let bp_diastolic_mid;
 
     switch (ga_weeks) {
         case 22:
-            bp_diastolic = 14;
+            bp_diastolic_mid = 39;
             break;
         case 23:
-            bp_diastolic = 15;
+            bp_diastolic_mid = 40;
             break;
         case 24:
-            bp_diastolic = 16;
+            bp_diastolic_mid = 42;
             break;
         case 25:
-            bp_diastolic = 17;
+            bp_diastolic_mid = 43;
             break;
         case 26:
-            bp_diastolic = 18;
+            bp_diastolic_mid = 44;
             break;
         case 27:
-            bp_diastolic = 19;
+            bp_diastolic_mid = 45;
             break;
         case 28:
-            bp_diastolic = 20;
+            bp_diastolic_mid = 47;
             break;
         case 29:
-            bp_diastolic = 21;
+            bp_diastolic_mid = 48;
             break;
         case 30:
-            bp_diastolic = 22;
+            bp_diastolic_mid = 50;
             break;
         case 31:
-            bp_diastolic = 23;
+            bp_diastolic_mid = 51;
             break;
         case 32:
-            bp_diastolic = 24;
+            bp_diastolic_mid = 52;
             break;
         case 33:
-            bp_diastolic = 25;
+            bp_diastolic_mid = 53;
             break;
         case 34:
-            bp_diastolic = 26;
+            bp_diastolic_mid = 55;
             break;
         case 35:
-            bp_diastolic = 27;
+            bp_diastolic_mid = 57;
             break;
         case 36:
-            bp_diastolic = 28;
+            bp_diastolic_mid = 59;
             break;
         case 37:
-            bp_diastolic = 29;
+            bp_diastolic_mid = 60;
             break;
         case 38:
-            bp_diastolic = 30;
+            bp_diastolic_mid = 61;
             break;
         case 39:
-            bp_diastolic = 31;
+            bp_diastolic_mid = 62;
             break;
         case 40:
-            bp_diastolic = 32;
+            bp_diastolic_mid = 64;
             break;
         case 41:
-            bp_diastolic = 33;
+            bp_diastolic_mid = 65;
             break;
         case 42:
-            bp_diastolic = 34;
+            bp_diastolic_mid = 67;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return bp_diastolic;
+    return bp_diastolic_mid;
 }
 
-function calculateMap(ga_weeks) {
+function calculateBpSystolicTop(ga_weeks) {
 
-    let map;
+    let bp_diastolic_top;
 
     switch (ga_weeks) {
         case 22:
-            map = 17;
+            bp_diastolic_top = 55;
             break;
         case 23:
-            map = 18;
+            bp_diastolic_top = 56;
             break;
         case 24:
-            map = 19;
+            bp_diastolic_top = 57;
             break;
         case 25:
-            map = 20;
+            bp_diastolic_top = 58;
             break;
         case 26:
-            map = 21;
+            bp_diastolic_top = 60;
             break;
         case 27:
-            map = 22;
+            bp_diastolic_top = 61;
             break;
         case 28:
-            map = 24;
+            bp_diastolic_top = 63;
             break;
         case 29:
-            map = 25;
+            bp_diastolic_top = 64;
             break;
         case 30:
-            map = 26;
+            bp_diastolic_top = 66;
             break;
         case 31:
-            map = 27;
+            bp_diastolic_top = 68;
             break;
         case 32:
-            map = 28;
+            bp_diastolic_top = 69;
             break;
         case 33:
-            map = 29;
+            bp_diastolic_top = 70;
             break;
         case 34:
-            map = 31;
+            bp_diastolic_top = 71;
             break;
         case 35:
-            map = 32;
+            bp_diastolic_top = 73;
             break;
         case 36:
-            map = 33;
+            bp_diastolic_top = 75;
             break;
         case 37:
-            map = 34;
+            bp_diastolic_top = 76;
             break;
         case 38:
-            map = 35;
+            bp_diastolic_top = 77;
             break;
         case 39:
-            map = 36;
+            bp_diastolic_top = 79;
             break;
         case 40:
-            map = 37;
+            bp_diastolic_top = 81;
             break;
         case 41:
-            map = 39;
+            bp_diastolic_top = 82;
             break;
         case 42:
-            map = 40;
+            bp_diastolic_top = 84;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return map;
+    return bp_diastolic_top;
+}
+
+function calculateBpDiastolicBottom(ga_weeks) {
+
+    let bp_diastolic_bottom;
+
+    switch (ga_weeks) {
+        case 22:
+            bp_diastolic_bottom = 14;
+            break;
+        case 23:
+            bp_diastolic_bottom = 15;
+            break;
+        case 24:
+            bp_diastolic_bottom = 16;
+            break;
+        case 25:
+            bp_diastolic_bottom = 17;
+            break;
+        case 26:
+            bp_diastolic_bottom = 18;
+            break;
+        case 27:
+            bp_diastolic_bottom = 19;
+            break;
+        case 28:
+            bp_diastolic_bottom = 20;
+            break;
+        case 29:
+            bp_diastolic_bottom = 21;
+            break;
+        case 30:
+            bp_diastolic_bottom = 22;
+            break;
+        case 31:
+            bp_diastolic_bottom = 23;
+            break;
+        case 32:
+            bp_diastolic_bottom = 24;
+            break;
+        case 33:
+            bp_diastolic_bottom = 25;
+            break;
+        case 34:
+            bp_diastolic_bottom = 26;
+            break;
+        case 35:
+            bp_diastolic_bottom = 27;
+            break;
+        case 36:
+            bp_diastolic_bottom = 28;
+            break;
+        case 37:
+            bp_diastolic_bottom = 29;
+            break;
+        case 38:
+            bp_diastolic_bottom = 30;
+            break;
+        case 39:
+            bp_diastolic_bottom = 31;
+            break;
+        case 40:
+            bp_diastolic_bottom = 32;
+            break;
+        case 41:
+            bp_diastolic_bottom = 33;
+            break;
+        case 42:
+            bp_diastolic_bottom = 34;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return bp_diastolic_bottom;
+}
+
+function calculateBpDiastolicMid(ga_weeks) {
+
+    let bp_diastolic_mid;
+
+    switch (ga_weeks) {
+        case 22:
+            bp_diastolic_mid = 23;
+            break;
+        case 23:
+            bp_diastolic_mid = 24;
+            break;
+        case 24:
+            bp_diastolic_mid = 25;
+            break;
+        case 25:
+            bp_diastolic_mid = 26;
+            break;
+        case 26:
+            bp_diastolic_mid = 27;
+            break;
+        case 27:
+            bp_diastolic_mid = 28;
+            break;
+        case 28:
+            bp_diastolic_mid = 29;
+            break;
+        case 29:
+            bp_diastolic_mid = 30;
+            break;
+        case 30:
+            bp_diastolic_mid = 31;
+            break;
+        case 31:
+            bp_diastolic_mid = 32;
+            break;
+        case 32:
+            bp_diastolic_mid = 33;
+            break;
+        case 33:
+            bp_diastolic_mid = 34;
+            break;
+        case 34:
+            bp_diastolic_mid = 35;
+            break;
+        case 35:
+            bp_diastolic_mid = 36;
+            break;
+        case 36:
+            bp_diastolic_mid = 37;
+            break;
+        case 37:
+            bp_diastolic_mid = 38;
+            break;
+        case 38:
+            bp_diastolic_mid = 39;
+            break;
+        case 39:
+            bp_diastolic_mid = 40;
+            break;
+        case 40:
+            bp_diastolic_mid = 41;
+            break;
+        case 41:
+            bp_diastolic_mid = 42;
+            break;
+        case 42:
+            bp_diastolic_mid = 43;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return bp_diastolic_mid;
+}
+
+function calculateBpDiastolicTop(ga_weeks) {
+
+    let bp_diastolic_top;
+
+    switch (ga_weeks) {
+        case 22:
+            bp_diastolic_top = 31;
+            break;
+        case 23:
+            bp_diastolic_top = 32;
+            break;
+        case 24:
+            bp_diastolic_top = 33;
+            break;
+        case 25:
+            bp_diastolic_top = 34;
+            break;
+        case 26:
+            bp_diastolic_top = 35;
+            break;
+        case 27:
+            bp_diastolic_top = 36;
+            break;
+        case 28:
+            bp_diastolic_top = 37;
+            break;
+        case 29:
+            bp_diastolic_top = 38;
+            break;
+        case 30:
+            bp_diastolic_top = 39;
+            break;
+        case 31:
+            bp_diastolic_top = 40;
+            break;
+        case 32:
+            bp_diastolic_top = 41;
+            break;
+        case 33:
+            bp_diastolic_top = 42;
+            break;
+        case 34:
+            bp_diastolic_top = 43;
+            break;
+        case 35:
+            bp_diastolic_top = 44;
+            break;
+        case 36:
+            bp_diastolic_top = 45;
+            break;
+        case 37:
+            bp_diastolic_top = 46;
+            break;
+        case 38:
+            bp_diastolic_top = 47;
+            break;
+        case 39:
+            bp_diastolic_top = 48;
+            break;
+        case 40:
+            bp_diastolic_top = 49;
+            break;
+        case 41:
+            bp_diastolic_top = 50;
+            break;
+        case 42:
+            bp_diastolic_top = 51;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return bp_diastolic_top;
+}
+
+function calculateMapBottom(ga_weeks) {
+
+    let map_bottom;
+
+    switch (ga_weeks) {
+        case 22:
+            map_bottom = 17;
+            break;
+        case 23:
+            map_bottom = 18;
+            break;
+        case 24:
+            map_bottom = 19;
+            break;
+        case 25:
+            map_bottom = 20;
+            break;
+        case 26:
+            map_bottom = 21;
+            break;
+        case 27:
+            map_bottom = 22;
+            break;
+        case 28:
+            map_bottom = 24;
+            break;
+        case 29:
+            map_bottom = 25;
+            break;
+        case 30:
+            map_bottom = 26;
+            break;
+        case 31:
+            map_bottom = 27;
+            break;
+        case 32:
+            map_bottom = 28;
+            break;
+        case 33:
+            map_bottom = 29;
+            break;
+        case 34:
+            map_bottom = 31;
+            break;
+        case 35:
+            map_bottom = 32;
+            break;
+        case 36:
+            map_bottom = 33;
+            break;
+        case 37:
+            map_bottom = 34;
+            break;
+        case 38:
+            map_bottom = 35;
+            break;
+        case 39:
+            map_bottom = 36;
+            break;
+        case 40:
+            map_bottom = 37;
+            break;
+        case 41:
+            map_bottom = 39;
+            break;
+        case 42:
+            map_bottom = 40;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return map_bottom;
+}
+
+function calculateMapMid(ga_weeks) {
+
+    let map_mid;
+
+    switch (ga_weeks) {
+        case 22:
+            map_mid = 28;
+            break;
+        case 23:
+            map_mid = 29;
+            break;
+        case 24:
+            map_mid = 31;
+            break;
+        case 25:
+            map_mid = 32;
+            break;
+        case 26:
+            map_mid = 33;
+            break;
+        case 27:
+            map_mid = 34;
+            break;
+        case 28:
+            map_mid = 35;
+            break;
+        case 29:
+            map_mid = 36;
+            break;
+        case 30:
+            map_mid = 37;
+            break;
+        case 31:
+            map_mid = 38;
+            break;
+        case 32:
+            map_mid = 39;
+            break;
+        case 33:
+            map_mid = 40;
+            break;
+        case 34:
+            map_mid = 42;
+            break;
+        case 35:
+            map_mid = 43;
+            break;
+        case 36:
+            map_mid = 44;
+            break;
+        case 37:
+            map_mid = 45;
+            break;
+        case 38:
+            map_mid = 46;
+            break;
+        case 39:
+            map_mid = 47;
+            break;
+        case 40:
+            map_mid = 49;
+            break;
+        case 41:
+            map_mid = 50;
+            break;
+        case 42:
+            map_mid = 51;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return map_mid;
+}
+
+function calculateMapTop(ga_weeks) {
+
+    let map_top;
+
+    switch (ga_weeks) {
+        case 22:
+            map_top = 39;
+            break;
+        case 23:
+            map_top = 40;
+            break;
+        case 24:
+            map_top = 41;
+            break;
+        case 25:
+            map_top = 42;
+            break;
+        case 26:
+            map_top = 43;
+            break;
+        case 27:
+            map_top = 44;
+            break;
+        case 28:
+            map_top = 46;
+            break;
+        case 29:
+            map_top = 47;
+            break;
+        case 30:
+            map_top = 48;
+            break;
+        case 31:
+            map_top = 49;
+            break;
+        case 32:
+            map_top = 50;
+            break;
+        case 33:
+            map_top = 51;
+            break;
+        case 34:
+            map_top = 52;
+            break;
+        case 35:
+            map_top = 54;
+            break;
+        case 36:
+            map_top = 55;
+            break;
+        case 37:
+            map_top = 56;
+            break;
+        case 38:
+            map_top = 57;
+            break;
+        case 39:
+            map_top = 58;
+            break;
+        case 40:
+            map_top = 60;
+            break;
+        case 41:
+            map_top = 61;
+            break;
+        case 42:
+            map_top = 62;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return map_top;
 }

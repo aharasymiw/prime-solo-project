@@ -37,7 +37,7 @@ router.get('/:patient_uuid', rejectUnauthenticated, (req, res, next) => {
 
   const queryText = `
       SELECT
-        uuid, anonymous_id, birth_weight, birth_weight_actual, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc, bp_systolic_actual, bp_diastolic_calc, bp_diastolic_actual, map_calc, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes
+        uuid, anonymous_id, birth_weight, birth_weight_actual, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc_bottom, bp_systolic_calc_mid, bp_systolic_calc_top, bp_systolic_actual, bp_diastolic_calc_bottom, bp_diastolic_calc_mid, bp_diastolic_calc_top, bp_diastolic_actual, map_calc_bottom, map_calc_mid, map_calc_top, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes
       FROM
         "patients" 
       WHERE
@@ -71,17 +71,24 @@ router.post('/', rejectUnauthenticated, (req, res, next) => {
   const ett_depth_age_calc = newPatient.ett_depth_age_calc;
   const uac_depth_calc = newPatient.uac_depth_calc;
   const uvc_depth_calc = newPatient.uvc_depth_calc;
-  const bp_systolic_calc = newPatient.bp_systolic_calc;
-  const bp_diastolic_calc = newPatient.bp_diastolic_calc;
-  const map_calc = newPatient.map_calc;
+  const bp_systolic_calc_bottom = newPatient.bp_systolic_calc_bottom;
+  const bp_diastolic_calc_bottom = newPatient.bp_diastolic_calc_bottom;
+  const map_calc_bottom = newPatient.map_calc_bottom;
+  const bp_systolic_calc_mid = newPatient.bp_systolic_calc_mid;
+  const bp_diastolic_calc_mid = newPatient.bp_diastolic_calc_mid;
+  const map_calc_mid = newPatient.map_calc_mid;
+  const bp_systolic_calc_top = newPatient.bp_systolic_calc_top;
+  const bp_diastolic_calc_top = newPatient.bp_diastolic_calc_top;
+  const map_calc_top = newPatient.map_calc_top;
+
   const managed_by = user.uuid;
   const created_by = user.uuid;
   const updated_by = user.uuid;
 
-  const queryText = `INSERT INTO "patients" (anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc, bp_systolic_calc, bp_diastolic_calc, map_calc, managed_by, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING uuid;`;
+  const queryText = `INSERT INTO "patients" (anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc, bp_systolic_calc_bottom, bp_systolic_calc_mid, bp_systolic_calc_top, bp_diastolic_calc_bottom, bp_diastolic_calc_mid, bp_diastolic_calc_top, map_calc_bottom, map_calc_mid, map_calc_top, managed_by, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21) RETURNING uuid;`;
   pool
-    .query(queryText, [anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc, bp_systolic_calc, bp_diastolic_calc, map_calc, managed_by, created_by, updated_by])
+    .query(queryText, [anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_depth_weight_calc, ett_depth_age_calc, uac_depth_calc, uvc_depth_calc, bp_systolic_calc_bottom, bp_systolic_calc_mid, bp_systolic_calc_top, bp_diastolic_calc_bottom, bp_diastolic_calc_mid, bp_diastolic_calc_top, map_calc_bottom, map_calc_mid, map_calc_top, managed_by, created_by, updated_by])
     .then((dbResponse) => {
       let uuid = dbResponse.rows[0].uuid;
       res.json({ uuid, anonymous_id });

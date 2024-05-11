@@ -96,20 +96,39 @@ function CalculatorResults() {
             <table>
                 <thead>
                     <tr>
-                        <th>5th %ile Systolic</th>
-                        <th>5th %ile Diastolic</th>
-                        <th>5th %ile MAP</th>
+                        <th>%ile</th>
+                        <th>Sys:</th>
+                        <th>Dia:</th>
+                        <th>MAP</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{newPatient.bp_systolic_calc}</td>
-                        <td>{newPatient.bp_diastolic_calc}</td>
-                        <td>{newPatient.map_calc}</td>
+                        <td>5<sup>th</sup></td>
+                        <td>{newPatient.bp_systolic_calc_bottom}</td>
+                        <td>{newPatient.bp_diastolic_calc_bottom}</td>
+                        <td>{newPatient.map_calc_bottom}</td>
+                    </tr>
+                    <tr>
+                        <td>50<sup>th</sup></td>
+                        <td>{newPatient.bp_systolic_calc_mid}</td>
+                        <td>{newPatient.bp_diastolic_calc_mid}</td>
+                        <td>{newPatient.map_calc_mid}</td>
+                    </tr>
+                    <tr>
+                        <td>95<sup>th</sup></td>
+                        <td>{newPatient.bp_systolic_calc_top}</td>
+                        <td>{newPatient.bp_diastolic_calc_top}</td>
+                        <td>{newPatient.map_calc_top}</td>
                     </tr>
                 </tbody>
             </table>
 
+            <section className='footnote'>
+                <p>Epinephrine Concentration: 0.1 mg/mL = 1 mg / 10 mL</p>
+                <p>ETT size ≈ GA / 10</p>
+                <p>ETT Insertion ≈ weight in kg(s) + 6</p>
+            </section>
 
             {
                 user.uuid ?
@@ -136,11 +155,6 @@ function CalculatorResults() {
                     </button>
             }
 
-            <section className='footnote'>
-                <p>Epinephrine Concentration: 0.1 mg/mL = 1 mg / 10 mL</p>
-                <p>ETT size ≈ GA / 10</p>
-                <p>ETT Insertion ≈ weight in kg(s) + 6</p>
-            </section>
         </>
     );
 }
