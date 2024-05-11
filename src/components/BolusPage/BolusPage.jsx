@@ -214,7 +214,7 @@ function BolusPage() {
             </fieldset>
 
             <div>
-                <input className="btn" type="submit" value="Add Notes" />
+                <input className="btn" type="submit" value="Add Details" />
             </div>
 
         </form>
