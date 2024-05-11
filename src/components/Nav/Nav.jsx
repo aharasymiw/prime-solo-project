@@ -1,17 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Nav() {
   const user = useSelector((store) => store.user);
 
+  const dispatch = useDispatch();
+
+  const reset = () => {
+    dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
+
+  }
+
   return (
     <div className="nav">
-      <Link to="/home">
+      <NavLink to="/calculator" onClick={reset}>
         <h2 className="nav-title">NICU Calc</h2>
-      </Link>
+      </NavLink>
       <div>
         {/* If no user is logged in, show these links */}
         {!user.uuid && (

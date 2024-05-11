@@ -39,9 +39,7 @@ function CalculatorForm() {
     const reset = (event) => {
         event.preventDefault();
 
-        dispatch({
-            type: 'NEW_PATIENT_CLEAR_CACHE',
-        });
+        dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
 
         set_birth_weight('');
         set_ga_weeks('');
