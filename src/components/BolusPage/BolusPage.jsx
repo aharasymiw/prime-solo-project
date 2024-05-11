@@ -111,7 +111,6 @@ function BolusPage() {
                                 min='20'
                                 max='150'
                                 placeholder='Systolic [20 - 150]'
-                                required
                                 value={bp_systolic_actual}
                                 onChange={(event) => set_bp_systolic_actual(event.target.value)}
                             />
@@ -122,7 +121,6 @@ function BolusPage() {
                                 min='0'
                                 max='100'
                                 placeholder='Diastolic [0 - 100]'
-                                required
                                 value={bp_diastolic_actual}
                                 onChange={(event) => set_bp_diastolic_actual(event.target.value)}
                             />
@@ -137,7 +135,6 @@ function BolusPage() {
                                 min='0'
                                 max='100'
                                 placeholder='[0 - 100]'
-                                required
                                 value={map_actual}
                                 onChange={(event) => set_map_actual(event.target.value)}
                             />

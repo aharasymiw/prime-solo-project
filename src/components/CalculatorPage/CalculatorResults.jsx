@@ -97,9 +97,10 @@ function CalculatorResults() {
                 <thead>
                     <tr>
                         <th>%ile</th>
-                        <th>Sys:</th>
-                        <th>Dia:</th>
+                        <th>Systolic</th>
+                        <th>Diastolic</th>
                         <th>MAP</th>
+                        <th>Pulse Pressure</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,18 +109,21 @@ function CalculatorResults() {
                         <td>{newPatient.bp_systolic_calc_bottom}</td>
                         <td>{newPatient.bp_diastolic_calc_bottom}</td>
                         <td>{newPatient.map_calc_bottom}</td>
+                        <td>{newPatient.pulse_pressure_calc_bottom}</td>
                     </tr>
                     <tr>
                         <td>50<sup>th</sup></td>
                         <td>{newPatient.bp_systolic_calc_mid}</td>
                         <td>{newPatient.bp_diastolic_calc_mid}</td>
                         <td>{newPatient.map_calc_mid}</td>
+                        <td>{newPatient.pulse_pressure_calc_mid}</td>
                     </tr>
                     <tr>
                         <td>95<sup>th</sup></td>
                         <td>{newPatient.bp_systolic_calc_top}</td>
                         <td>{newPatient.bp_diastolic_calc_top}</td>
                         <td>{newPatient.map_calc_top}</td>
+                        <td>{newPatient.pulse_pressure_calc_top}</td>
                     </tr>
                 </tbody>
             </table>
@@ -134,7 +138,7 @@ function CalculatorResults() {
                 user.uuid ?
                     <button
                         type="button"
-                        className="btn btn_asLink"
+                        className="btn"
                         onClick={() => {
                             { !newPatient.patient_uuid && savePatient(); }
                             history.push('/bolus');
@@ -146,7 +150,7 @@ function CalculatorResults() {
                     // Otherwise, show a "login/register" option
                     <button
                         type="button"
-                        className="btn btn_asLink"
+                        className="btn"
                         onClick={() =>
                             history.push('/login')
                         }

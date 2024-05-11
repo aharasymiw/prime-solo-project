@@ -25,6 +25,9 @@ function* newPatientCalculate(action) {
         map_calc_bottom: calculateMapBottom(ga_weeks),
         map_calc_mid: calculateMapMid(ga_weeks),
         map_calc_top: calculateMapTop(ga_weeks),
+        pulse_pressure_calc_bottom: calculatePulsePressureBottom(ga_weeks),
+        pulse_pressure_calc_mid: calculatePulsePressureMid(ga_weeks),
+        pulse_pressure_calc_top: calculatePulsePressureTop(ga_weeks),
         iv_id_epi: calculateIvIdEpinephrin(birth_weight_in_kg),
         ett_epi: calculateEttEpinephrin(birth_weight_in_kg),
         mkdSixty: calculateMkdSixty(birth_weight_in_kg),
@@ -71,6 +74,9 @@ function* existingPatientCalculate(action) {
         map_calc_mid: patientData.map_calc_mid,
         map_calc_top: patientData.map_calc_top,
         map_actual: patientData.map_actual,
+        pulse_pressure_calc_bottom: patientData.pulse_pressure_calc_bottom,
+        pulse_pressure_calc_mid: patientData.pulse_pressure_calc_mid,
+        pulse_pressure_calc_top: patientData.pulse_pressure_calc_top,
         ns_bolus_qty: patientData.ns_bolus_qty,
         d10_bolus_given: patientData.d10_bolus_given,
         init_blood_glucose: patientData.init_blood_glucose,
@@ -230,230 +236,249 @@ function calculateD10Bolus(birth_weight_in_kg) {
     return `${d10BolusMinRounded} - ${d10BolusMaxRounded} mL`;
 }
 
+
+
+
+
+
+
+
 function calculateBpSystolicBottom(ga_weeks) {
 
-    let bp_diastolic_bottom;
+    let bp_systolic_bottom;
 
     switch (ga_weeks) {
         case 22:
-            bp_diastolic_bottom = 22;
+            bp_systolic_bottom = 22;
             break;
         case 23:
-            bp_diastolic_bottom = 23;
+            bp_systolic_bottom = 23;
             break;
         case 24:
-            bp_diastolic_bottom = 25;
+            bp_systolic_bottom = 25;
             break;
         case 25:
-            bp_diastolic_bottom = 26;
+            bp_systolic_bottom = 26;
             break;
         case 26:
-            bp_diastolic_bottom = 27;
+            bp_systolic_bottom = 27;
             break;
         case 27:
-            bp_diastolic_bottom = 29;
+            bp_systolic_bottom = 29;
             break;
         case 28:
-            bp_diastolic_bottom = 31;
+            bp_systolic_bottom = 31;
             break;
         case 29:
-            bp_diastolic_bottom = 33;
+            bp_systolic_bottom = 33;
             break;
         case 30:
-            bp_diastolic_bottom = 35;
+            bp_systolic_bottom = 35;
             break;
         case 31:
-            bp_diastolic_bottom = 36;
+            bp_systolic_bottom = 36;
             break;
         case 32:
-            bp_diastolic_bottom = 37;
+            bp_systolic_bottom = 37;
             break;
         case 33:
-            bp_diastolic_bottom = 38;
+            bp_systolic_bottom = 38;
             break;
         case 34:
-            bp_diastolic_bottom = 40;
+            bp_systolic_bottom = 40;
             break;
         case 35:
-            bp_diastolic_bottom = 41;
+            bp_systolic_bottom = 41;
             break;
         case 36:
-            bp_diastolic_bottom = 42;
+            bp_systolic_bottom = 42;
             break;
         case 37:
-            bp_diastolic_bottom = 44;
+            bp_systolic_bottom = 44;
             break;
         case 38:
-            bp_diastolic_bottom = 46;
+            bp_systolic_bottom = 46;
             break;
         case 39:
-            bp_diastolic_bottom = 47;
+            bp_systolic_bottom = 47;
             break;
         case 40:
-            bp_diastolic_bottom = 48;
+            bp_systolic_bottom = 48;
             break;
         case 41:
-            bp_diastolic_bottom = 50;
+            bp_systolic_bottom = 50;
             break;
         case 42:
-            bp_diastolic_bottom = 51;
+            bp_systolic_bottom = 51;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return bp_diastolic_bottom;
+    return bp_systolic_bottom;
 }
 
 function calculateBpSystolicMid(ga_weeks) {
 
-    let bp_diastolic_mid;
+    let bp_systolic_mid;
 
     switch (ga_weeks) {
         case 22:
-            bp_diastolic_mid = 39;
+            bp_systolic_mid = 39;
             break;
         case 23:
-            bp_diastolic_mid = 40;
+            bp_systolic_mid = 40;
             break;
         case 24:
-            bp_diastolic_mid = 42;
+            bp_systolic_mid = 42;
             break;
         case 25:
-            bp_diastolic_mid = 43;
+            bp_systolic_mid = 43;
             break;
         case 26:
-            bp_diastolic_mid = 44;
+            bp_systolic_mid = 44;
             break;
         case 27:
-            bp_diastolic_mid = 45;
+            bp_systolic_mid = 45;
             break;
         case 28:
-            bp_diastolic_mid = 47;
+            bp_systolic_mid = 47;
             break;
         case 29:
-            bp_diastolic_mid = 48;
+            bp_systolic_mid = 48;
             break;
         case 30:
-            bp_diastolic_mid = 50;
+            bp_systolic_mid = 50;
             break;
         case 31:
-            bp_diastolic_mid = 51;
+            bp_systolic_mid = 51;
             break;
         case 32:
-            bp_diastolic_mid = 52;
+            bp_systolic_mid = 52;
             break;
         case 33:
-            bp_diastolic_mid = 53;
+            bp_systolic_mid = 53;
             break;
         case 34:
-            bp_diastolic_mid = 55;
+            bp_systolic_mid = 55;
             break;
         case 35:
-            bp_diastolic_mid = 57;
+            bp_systolic_mid = 57;
             break;
         case 36:
-            bp_diastolic_mid = 59;
+            bp_systolic_mid = 59;
             break;
         case 37:
-            bp_diastolic_mid = 60;
+            bp_systolic_mid = 60;
             break;
         case 38:
-            bp_diastolic_mid = 61;
+            bp_systolic_mid = 61;
             break;
         case 39:
-            bp_diastolic_mid = 62;
+            bp_systolic_mid = 62;
             break;
         case 40:
-            bp_diastolic_mid = 64;
+            bp_systolic_mid = 64;
             break;
         case 41:
-            bp_diastolic_mid = 65;
+            bp_systolic_mid = 65;
             break;
         case 42:
-            bp_diastolic_mid = 67;
+            bp_systolic_mid = 67;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return bp_diastolic_mid;
+    return bp_systolic_mid;
 }
 
 function calculateBpSystolicTop(ga_weeks) {
 
-    let bp_diastolic_top;
+    let bp_systolic_top;
 
     switch (ga_weeks) {
         case 22:
-            bp_diastolic_top = 55;
+            bp_systolic_top = 55;
             break;
         case 23:
-            bp_diastolic_top = 56;
+            bp_systolic_top = 56;
             break;
         case 24:
-            bp_diastolic_top = 57;
+            bp_systolic_top = 57;
             break;
         case 25:
-            bp_diastolic_top = 58;
+            bp_systolic_top = 58;
             break;
         case 26:
-            bp_diastolic_top = 60;
+            bp_systolic_top = 60;
             break;
         case 27:
-            bp_diastolic_top = 61;
+            bp_systolic_top = 61;
             break;
         case 28:
-            bp_diastolic_top = 63;
+            bp_systolic_top = 63;
             break;
         case 29:
-            bp_diastolic_top = 64;
+            bp_systolic_top = 64;
             break;
         case 30:
-            bp_diastolic_top = 66;
+            bp_systolic_top = 66;
             break;
         case 31:
-            bp_diastolic_top = 68;
+            bp_systolic_top = 68;
             break;
         case 32:
-            bp_diastolic_top = 69;
+            bp_systolic_top = 69;
             break;
         case 33:
-            bp_diastolic_top = 70;
+            bp_systolic_top = 70;
             break;
         case 34:
-            bp_diastolic_top = 71;
+            bp_systolic_top = 71;
             break;
         case 35:
-            bp_diastolic_top = 73;
+            bp_systolic_top = 73;
             break;
         case 36:
-            bp_diastolic_top = 75;
+            bp_systolic_top = 75;
             break;
         case 37:
-            bp_diastolic_top = 76;
+            bp_systolic_top = 76;
             break;
         case 38:
-            bp_diastolic_top = 77;
+            bp_systolic_top = 77;
             break;
         case 39:
-            bp_diastolic_top = 79;
+            bp_systolic_top = 79;
             break;
         case 40:
-            bp_diastolic_top = 81;
+            bp_systolic_top = 81;
             break;
         case 41:
-            bp_diastolic_top = 82;
+            bp_systolic_top = 82;
             break;
         case 42:
-            bp_diastolic_top = 84;
+            bp_systolic_top = 84;
             break;
         default:
             alert("Something went wrong, the ga weeks you entered don't make sense.");
     }
 
-    return bp_diastolic_top;
+    return bp_systolic_top;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 function calculateBpDiastolicBottom(ga_weeks) {
 
@@ -680,6 +705,13 @@ function calculateBpDiastolicTop(ga_weeks) {
     return bp_diastolic_top;
 }
 
+
+
+
+
+
+
+
 function calculateMapBottom(ga_weeks) {
 
     let map_bottom;
@@ -903,4 +935,238 @@ function calculateMapTop(ga_weeks) {
     }
 
     return map_top;
+}
+
+
+
+
+
+
+
+
+
+
+function calculatePulsePressureBottom(ga_weeks) {
+
+    let pulse_pressure_bottom;
+
+    switch (ga_weeks) {
+        case 22:
+            pulse_pressure_bottom = 8;
+            break;
+        case 23:
+            pulse_pressure_bottom = 8;
+            break;
+        case 24:
+            pulse_pressure_bottom = 9;
+            break;
+        case 25:
+            pulse_pressure_bottom = 9;
+            break;
+        case 26:
+            pulse_pressure_bottom = 9;
+            break;
+        case 27:
+            pulse_pressure_bottom = 10;
+            break;
+        case 28:
+            pulse_pressure_bottom = 11;
+            break;
+        case 29:
+            pulse_pressure_bottom = 10;
+            break;
+        case 30:
+            pulse_pressure_bottom = 13;
+            break;
+        case 31:
+            pulse_pressure_bottom = 13;
+            break;
+        case 32:
+            pulse_pressure_bottom = 13;
+            break;
+        case 33:
+            pulse_pressure_bottom = 13;
+            break;
+        case 34:
+            pulse_pressure_bottom = 14;
+            break;
+        case 35:
+            pulse_pressure_bottom = 14;
+            break;
+        case 36:
+            pulse_pressure_bottom = 14;
+            break;
+        case 37:
+            pulse_pressure_bottom = 15;
+            break;
+        case 38:
+            pulse_pressure_bottom = 16;
+            break;
+        case 39:
+            pulse_pressure_bottom = 16;
+            break;
+        case 40:
+            pulse_pressure_bottom = 16;
+            break;
+        case 41:
+            pulse_pressure_bottom = 17;
+            break;
+        case 42:
+            pulse_pressure_bottom = 17;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return pulse_pressure_bottom;
+}
+
+function calculatePulsePressureMid(ga_weeks) {
+
+    let pulse_pressure_mid;
+
+    switch (ga_weeks) {
+        case 22:
+            pulse_pressure_mid = 16;
+            break;
+        case 23:
+            pulse_pressure_mid = 16;
+            break;
+        case 24:
+            pulse_pressure_mid = 17;
+            break;
+        case 25:
+            pulse_pressure_mid = 17;
+            break;
+        case 26:
+            pulse_pressure_mid = 17;
+            break;
+        case 27:
+            pulse_pressure_mid = 17;
+            break;
+        case 28:
+            pulse_pressure_mid = 18;
+            break;
+        case 29:
+            pulse_pressure_mid = 18;
+            break;
+        case 30:
+            pulse_pressure_mid = 19;
+            break;
+        case 31:
+            pulse_pressure_mid = 19;
+            break;
+        case 32:
+            pulse_pressure_mid = 19;
+            break;
+        case 33:
+            pulse_pressure_mid = 19;
+            break;
+        case 34:
+            pulse_pressure_mid = 20;
+            break;
+        case 35:
+            pulse_pressure_mid = 21;
+            break;
+        case 36:
+            pulse_pressure_mid = 22;
+            break;
+        case 37:
+            pulse_pressure_mid = 22;
+            break;
+        case 38:
+            pulse_pressure_mid = 22;
+            break;
+        case 39:
+            pulse_pressure_mid = 22;
+            break;
+        case 40:
+            pulse_pressure_mid = 23;
+            break;
+        case 41:
+            pulse_pressure_mid = 23;
+            break;
+        case 42:
+            pulse_pressure_mid = 24;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return pulse_pressure_mid;
+}
+
+function calculatePulsePressureTop(ga_weeks) {
+
+    let pulse_pressure_top;
+
+    switch (ga_weeks) {
+        case 22:
+            pulse_pressure_top = 24;
+            break;
+        case 23:
+            pulse_pressure_top = 24;
+            break;
+        case 24:
+            pulse_pressure_top = 24;
+            break;
+        case 25:
+            pulse_pressure_top = 24;
+            break;
+        case 26:
+            pulse_pressure_top = 25;
+            break;
+        case 27:
+            pulse_pressure_top = 25;
+            break;
+        case 28:
+            pulse_pressure_top = 26;
+            break;
+        case 29:
+            pulse_pressure_top = 26;
+            break;
+        case 30:
+            pulse_pressure_top = 27;
+            break;
+        case 31:
+            pulse_pressure_top = 28;
+            break;
+        case 32:
+            pulse_pressure_top = 28;
+            break;
+        case 33:
+            pulse_pressure_top = 28;
+            break;
+        case 34:
+            pulse_pressure_top = 28;
+            break;
+        case 35:
+            pulse_pressure_top = 29;
+            break;
+        case 36:
+            pulse_pressure_top = 30;
+            break;
+        case 37:
+            pulse_pressure_top = 30;
+            break;
+        case 38:
+            pulse_pressure_top = 30;
+            break;
+        case 39:
+            pulse_pressure_top = 31;
+            break;
+        case 40:
+            pulse_pressure_top = 32;
+            break;
+        case 41:
+            pulse_pressure_top = 32;
+            break;
+        case 42:
+            pulse_pressure_top = 32;
+            break;
+        default:
+            alert("Something went wrong, the ga weeks you entered don't make sense.");
+    }
+
+    return pulse_pressure_top;
 }
