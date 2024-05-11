@@ -1,48 +1,88 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 function BolusPage() {
 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // Fill these in with ui inputs
-    const [ns_bolus_given, set_ns_bolus_given] = useState(false);
-    const [bp_systolic, set_bp_systolic] = useState(0);
-    const [bp_diastolic, set_bp_diastolic] = useState(0);
-    const [map, set_map] = useState(0);
-    const [ns_bolus_qty, set_ns_bolus_qty] = useState(0);
-    const [d10_bolus_given, set_d10_bolus_given] = useState(false);
-    const [init_blood_glucose, set_init_blood_glucose] = useState(0);
-    const [d10_bolus_qty, set_d10_bolus_qty] = useState(0);
+    const newPatient = useSelector(store => store.newPatient);
 
-    const postIt = (event) => { // terrible name, but collect the inputs and send them where they need to go and update history to next view
+    const [ns_bolus_given, set_ns_bolus_given] = useState(newPatient.ns_bolus_given || false);
+    const [bp_systolic_actual, set_bp_systolic_actual] = useState(newPatient.bp_systolic_actual || '');
+    const [bp_diastolic_actual, set_bp_diastolic_actual] = useState(newPatient.bp_diastolic_actual || '');
+    const [map_actual, set_map_actual] = useState(newPatient.map_actual || '');
+    const [ns_bolus_qty, set_ns_bolus_qty] = useState(newPatient.ns_bolus_qty || '');
+    const [d10_bolus_given, set_d10_bolus_given] = useState(newPatient.d10_bolus_given || false);
+    const [init_blood_glucose, set_init_blood_glucose] = useState(newPatient.init_blood_glucose || '');
+    const [d10_bolus_qty, set_d10_bolus_qty] = useState(newPatient.d10_bolus_qty || '');
+
+    useEffect(() => {
+        newPatient.ns_bolus_given && set_ns_bolus_given(newPatient.ns_bolus_given);
+        newPatient.bp_systolic_actual && set_bp_systolic_actual(newPatient.bp_systolic_actual);
+        newPatient.bp_diastolic_actual && set_bp_diastolic_actual(newPatient.bp_diastolic_actual);
+        newPatient.map_actual && set_map_actual(newPatient.map_actual);
+        newPatient.ns_bolus_qty && set_ns_bolus_qty(newPatient.ns_bolus_qty);
+        newPatient.d10_bolus_given && set_d10_bolus_given(newPatient.d10_bolus_given);
+        newPatient.init_blood_glucose && set_init_blood_glucose(newPatient.init_blood_glucose);
+        newPatient.d10_bolus_qty && set_d10_bolus_qty(newPatient.d10_bolus_qty);
+    }, [newPatient]);
+
+    const updatePatient = payload => {
+
+        axios.post('/api/patients/boluses/', payload)
+            .then(result => {
+                console.log('Updated bolus info for patient:', newPatient.uuid);
+            }
+            ).catch(error => {
+                console.log('Updated patient failed:', error);
+            });
+    };
+
+    const updatePatientCache = (event) => {
         event.preventDefault();
+
+        // If NS Bolus Given is unchecked, clear out the details
+        if (!ns_bolus_given) {
+            set_bp_systolic_actual(0);
+            set_bp_systolic_actual(0);
+            set_bp_diastolic_actual(0);
+            set_map_actual(0);
+            set_ns_bolus_qty(0);
+        };
+
+        // If D10 Bolus Given is unchecked, clear out the details
+        if (!d10_bolus_given) {
+            set_init_blood_glucose(0);
+            set_d10_bolus_qty(0);
+        };
 
         let payload = {
             ns_bolus_given,
-            bp_systolic: Number(bp_systolic),
-            bp_diastolic: Number(bp_diastolic),
-            map: Number(map),
+            bp_systolic_actual: Number(bp_systolic_actual),
+            bp_diastolic_actual: Number(bp_diastolic_actual),
+            map_actual: Number(map_actual),
             ns_bolus_qty: Number(ns_bolus_qty),
             d10_bolus_given: d10_bolus_given,
             init_blood_glucose: Number(init_blood_glucose),
             d10_bolus_qty: Number(d10_bolus_qty)
         };
 
-        // This is a placeholder, need to actually do the data stuff.
         dispatch({
-            type: 'NEW_PATIENT_CALCULATE',
+            type: 'NEW_PATIENT_APPEND_CACHE',
             payload: payload
         });
 
-        history.push('/notes');
+        payload.uuid = newPatient.uuid;
 
+        updatePatient(payload);
+        history.push('/calculated');
     };
 
     return (
-        <form className="formPanel" onSubmit={postIt}>
+        <form className="formPanel" onSubmit={updatePatientCache}>
 
             <fieldset>
                 <legend>NS Bolus</legend>
@@ -67,22 +107,24 @@ function BolusPage() {
 
                             <input
                                 type="number"
-                                name="bp_systolic"
+                                name="bp_systolic_actual"
                                 min='20'
                                 max='150'
                                 placeholder='Systolic [20 - 150]'
                                 required
-                                onChange={(event) => set_bp_systolic(event.target.value)}
+                                value={bp_systolic_actual}
+                                onChange={(event) => set_bp_systolic_actual(event.target.value)}
                             />
 
                             <input
                                 type="number"
-                                name="bp_diastolic"
+                                name="bp_diastolic_actual"
                                 min='0'
                                 max='100'
                                 placeholder='Diastolic [0 - 100]'
                                 required
-                                onChange={(event) => set_bp_diastolic(event.target.value)}
+                                value={bp_diastolic_actual}
+                                onChange={(event) => set_bp_diastolic_actual(event.target.value)}
                             />
                         </ fieldset>
 
@@ -91,12 +133,13 @@ function BolusPage() {
 
                             <input
                                 type="number"
-                                name="map"
+                                name="map_actual"
                                 min='0'
                                 max='100'
                                 placeholder='[0 - 100]'
                                 required
-                                onChange={(event) => set_map(event.target.value)}
+                                value={map_actual}
+                                onChange={(event) => set_map_actual(event.target.value)}
                             />
                         </ fieldset>
 
@@ -110,6 +153,7 @@ function BolusPage() {
                                 max='100'
                                 placeholder='[0 - 100]'
                                 required
+                                value={ns_bolus_qty}
                                 onChange={(event) => set_ns_bolus_qty(event.target.value)}
                             />
                         </ fieldset>
@@ -148,6 +192,7 @@ function BolusPage() {
                                 max='200'
                                 placeholder='[0 - 200]'
                                 required
+                                value={init_blood_glucose}
                                 onChange={(event) => set_init_blood_glucose(event.target.value)}
                             />
                         </ fieldset>
@@ -162,6 +207,7 @@ function BolusPage() {
                                 max='100'
                                 placeholder='[0 - 100]'
                                 required
+                                value={d10_bolus_qty}
                                 onChange={(event) => set_d10_bolus_qty(event.target.value)}
                             />
                         </ fieldset>
@@ -175,7 +221,6 @@ function BolusPage() {
             </div>
 
         </form>
-
     );
 }
 

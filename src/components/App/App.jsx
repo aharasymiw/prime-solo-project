@@ -15,11 +15,13 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
 import BolusPage from '../BolusPage/BolusPage';
+import DetailsCalculatedPage from '../DetailsCalculatedPage/DetailsCalculatedPage';
 import NotesPage from '../NotesPage/NotesPage';
 import CalculatorPage from '../CalculatorPage/CalculatorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import SummaryPage from '../SummaryPage/SummaryPage';
 
 import './App.css';
 
@@ -58,11 +60,24 @@ function App() {
 
           <ProtectedRoute
             exact
+            path="/calculated"
+          >
+            <DetailsCalculatedPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
             path="/notes"
           >
             <NotesPage />
           </ProtectedRoute>
 
+          <ProtectedRoute
+            exact
+            path="/summary"
+          >
+            <SummaryPage />
+          </ProtectedRoute>
 
           <Route
             // shows AboutPage at all times (logged in or not)

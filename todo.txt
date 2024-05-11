@@ -8,3 +8,29 @@ Show only all patients needing 'actual' values.
 Pre-Fill calculator input fields if there is data.
 
 On the Bolus page, Initial Blood Glucose, "200 plus" option
+
+
+POST	http://localhost:3000/api/patients/details/
+Patient update failed: 
+
+ error: duplicate key value violates unique constraint "patients_anonymous_id_key"
+    at /Users/aharasymiw/dev/nicu_calc/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  length: 227,
+  severity: 'ERROR',
+  code: '23505',
+  detail: 'Key (anonymous_id)=(G5132) already exists.',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: 'public',
+  table: 'patients',
+  column: undefined,
+  dataType: undefined,
+  constraint: 'patients_anonymous_id_key',
+  file: 'nbtinsert.c',
+  line: '664',
+  routine: '_bt_check_unique'
+}

@@ -22,7 +22,7 @@ function Nav() {
             </Link>
 
             <Link className="navLink" to="/login">
-              Login / Register
+              Login
             </Link>
           </>
         )}
@@ -34,9 +34,9 @@ function Nav() {
               Calculator
             </Link>
 
-            <Link className="navLink" to="/profile">
+            {/* <Link className="navLink" to="/profile">
               Profile
-            </Link>
+            </Link> */}
 
             <LogOutButton className="navLink" />
           </>
