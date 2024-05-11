@@ -72,9 +72,9 @@ function CalculatorForm() {
                 <input
                     type="number"
                     name="ga_weeks"
-                    min='21'
-                    max='44'
-                    placeholder='Weeks [21 - 44]'
+                    min='23'
+                    max='42'
+                    placeholder='Weeks [23 - 42]'
                     required
                     value={ga_weeks}
                     onChange={(event) => set_ga_weeks(event.target.value)}
