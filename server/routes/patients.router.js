@@ -47,10 +47,6 @@ router.get('/:patient_uuid', rejectUnauthenticated, (req, res, next) => {
     .query(queryText, [patient_uuid, managed_by])
     .then((dbResponse) => {
       let patient = dbResponse.rows[0];
-      console.log('dbResponse.rows[0].ett_depth_actual', dbResponse.rows[0].ett_depth_actual);
-      console.log('typeof dbResponse.rows[0].ett_depth_actual', typeof dbResponse.rows[0].ett_depth_actual);
-      console.log('dbResponse.rows[0].uac_depth_calc', dbResponse.rows[0].uac_depth_calc);
-      console.log('typeof dbResponse.rows[0].uac_depth_calc', typeof dbResponse.rows[0].uac_depth_calc);
       res.json(patient);
     })
     .catch((err) => {

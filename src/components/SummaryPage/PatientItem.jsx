@@ -13,12 +13,9 @@ function PatientItem({ patientSummary }) {
   function fetchPatientDetails(patientSummary) {
 
     const uuid = patientSummary.uuid;
-    console.log('uuid', uuid);
-    console.log('typeof uuid', typeof uuid);
 
     axios.get('/api/patients/' + uuid)
       .then(result => {
-        console.log('result.data', result.data);
         // result.data = {uuid, anonymous_id, birth_weight, birth_weight_actual, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc, bp_systolic_actual, bp_diastolic_calc, bp_diastolic_actual, map_calc, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes}
         dispatch({ type: 'EXISTING_PATIENT_CALCULATE', payload: result.data });
       })
