@@ -15,7 +15,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
 import BolusPage from '../BolusPage/BolusPage';
-import DetailsCalculatedPage from '../DetailsCalculatedPage/DetailsCalculatedPage';
+import DetailsActualPage from '../DetailsActualPage/DetailsActualPage';
 import NotesPage from '../NotesPage/NotesPage';
 import CalculatorPage from '../CalculatorPage/CalculatorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
@@ -62,7 +62,7 @@ function App() {
             exact
             path="/calculated"
           >
-            <DetailsCalculatedPage />
+            <DetailsActualPage />
           </ProtectedRoute>
 
           <ProtectedRoute

@@ -160,7 +160,6 @@ function BolusPage() {
 
             </fieldset>
 
-
             <fieldset>
                 <legend>D10 Bolus</legend>
 
@@ -213,9 +212,7 @@ function BolusPage() {
                 }
             </fieldset>
 
-            <div>
-                <input className="btn" type="submit" value="Add Details" />
-            </div>
+            <input className="btn" type="submit" value="Add Details" />
 
         </form>
     );

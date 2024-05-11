@@ -52,51 +52,44 @@ function NotesPage() {
     };
 
     return (
-        <>
-            <form className="formPanel">
+        <form className="formPanel">
 
-                <fieldset>
-                    <legend>Notes</legend>
+            <fieldset>
+                <legend>Notes</legend>
 
-                    <textarea
-                        id="notes"
-                        name="notes"
-                        placeholder="patient notes"
-                        value={notes}
-                        onChange={(event) => set_notes(event.target.value)}
-                    />
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder="patient notes"
+                    value={notes}
+                    onChange={(event) => set_notes(event.target.value)}
+                />
 
-                </fieldset>
-            </form>
+            </fieldset>
 
-            <div>
-                <button
-                    type="button"
-                    className="btn"
-                    onClick={() => {
-                        updatePatientCache();
-                        fetchPatientList();
-                        history.push('/summary');
-                    }}
-                >
-                    Save & Summary
-                </button>
-            </div>
+            <input
+                className="btn"
+                type="button"
+                value="Save & Summary"
+                onClick={() => {
+                    updatePatientCache();
+                    fetchPatientList();
+                    history.push('/summary');
+                }}
+            />
+                
+            <input
+                className="btn"
+                type="button"
+                value="Save & New"
+                onClick={() => {
+                    updatePatientCache();
+                    dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
+                    history.push('/calculator');
+                }}
+            />
 
-            <div>
-                <button
-                    type="button"
-                    className="btn btn_asLink"
-                    onClick={() => {
-                        updatePatientCache();
-                        dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
-                        history.push('/calculator');
-                    }}
-                >
-                    Save & go to new entry
-                </button>
-            </div>
-        </>
+        </form >
     );
 }
 

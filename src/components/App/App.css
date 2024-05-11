@@ -103,7 +103,7 @@ Form Treatment
   margin: 0 auto 20px;
   background-color: #efefef;
   border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+  /* box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4); */
 }
 
 textarea {
@@ -121,11 +121,6 @@ input {
   display: block;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
 table,
 th,
 td {
@@ -134,6 +129,7 @@ td {
 
 table {
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
   margin-top: 5px;
 }
@@ -152,16 +148,11 @@ tr {
   width: 100%;
 }
 
-table,
 th,
 td {
-  border: 1px solid;
-}
-
-th,
-td {
-  text-align: left;
+  text-align: center;
   padding-left: 1em;
+  padding-right: 1em;
 }
 
 p,

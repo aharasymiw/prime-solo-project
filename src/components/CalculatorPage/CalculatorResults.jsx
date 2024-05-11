@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { round1 } from '../../fe_utils/fe_utils'
 import axios from 'axios';
 
-
 function CalculatorResults() {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -26,7 +25,7 @@ function CalculatorResults() {
     }
 
     return (
-        <>
+        <section>
             <table>
                 <thead>
                     <tr>
@@ -159,7 +158,7 @@ function CalculatorResults() {
                     </button>
             }
 
-        </>
+        </section>
     );
 }
 

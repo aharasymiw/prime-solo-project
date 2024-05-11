@@ -6,8 +6,8 @@ function SummaryPage() {
   const patientList = useSelector(store => store.patientList);
 
   return (
-    <>
-      <h2>Edit Data</h2>
+    <div className="container">
+    <h2>Edit Data</h2>
 
       <table>
         <thead>
@@ -22,7 +22,7 @@ function SummaryPage() {
           {patientList && patientList[0] && patientList.map(patientSummary => <PatientItem key={patientSummary.uuid} patientSummary={patientSummary} />)}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }
 
