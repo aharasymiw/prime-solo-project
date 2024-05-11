@@ -27,7 +27,7 @@ app.use('/api/user', userRouter);
 app.use('/api/patients', patientsRouter);
 
 // Serve static files
-app.use(express.static('public'));
+app.use(express.static('build'));
 
 // App Set //
 const PORT = process.env.PORT || 5000;
