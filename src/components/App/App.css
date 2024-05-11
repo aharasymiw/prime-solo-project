@@ -138,22 +138,27 @@ thead {
   background-color: rgb(210, 210, 210);
 }
 
-th {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: lighter;
-}
-
 tr {
   height: 2em;
   width: 100%;
 }
 
-th,
+th {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: lighter;
+}
+
 td {
-  text-align: center;
   padding-left: 1em;
   padding-right: 1em;
 }
+
+th,
+td {
+  text-align: center;
+}
+
+
 
 p,
 .two-lines {

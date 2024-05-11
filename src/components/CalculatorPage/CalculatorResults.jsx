@@ -48,7 +48,7 @@ function CalculatorResults() {
             <table>
                 <thead>
                     <tr>
-                        <th>rate</th>
+                        <th>Rate</th>
                         <th>60 mkd</th>
                         <th>80 mkd</th>
                         <th>100 mkd</th>
