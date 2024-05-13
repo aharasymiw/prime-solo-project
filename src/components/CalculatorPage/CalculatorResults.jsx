@@ -21,7 +21,6 @@ function CalculatorResults() {
                 console.log('Error saving the patient', err);
                 alert('error saving the patient, please try reloading.');
             });
-        ;
     }
 
     return (
@@ -139,13 +138,13 @@ function CalculatorResults() {
                 user.uuid ?
                     <button
                         type="button"
-                        className="btn"
+                        className="btn btn_asLink"
                         onClick={() => {
-                            { !newPatient.patient_uuid && savePatient(); }
-                            history.push('/bolus');
+                            { !newPatient.uuid && savePatient(); }
+                            history.push('/details');
                         }}
                     >
-                        Bolus Details
+                        Enter Post-Resuscitation Details
                     </button>
                     :
                     // Otherwise, show a "login/register" option

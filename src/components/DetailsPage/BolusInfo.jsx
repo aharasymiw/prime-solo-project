@@ -1,23 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-function BolusPage() {
-
-    const dispatch = useDispatch();
-    const history = useHistory();
+function BolusInfo({ ns_bolus_given, set_ns_bolus_given, bp_systolic_actual, set_bp_systolic_actual, bp_diastolic_actual, set_bp_diastolic_actual, map_actual, set_map_actual, ns_bolus_qty, set_ns_bolus_qty, d10_bolus_given, set_d10_bolus_given, init_blood_glucose, set_init_blood_glucose, d10_bolus_qty, set_d10_bolus_qty }) {
 
     const newPatient = useSelector(store => store.newPatient);
-
-    const [ns_bolus_given, set_ns_bolus_given] = useState(newPatient.ns_bolus_given || false);
-    const [bp_systolic_actual, set_bp_systolic_actual] = useState(newPatient.bp_systolic_actual || '');
-    const [bp_diastolic_actual, set_bp_diastolic_actual] = useState(newPatient.bp_diastolic_actual || '');
-    const [map_actual, set_map_actual] = useState(newPatient.map_actual || '');
-    const [ns_bolus_qty, set_ns_bolus_qty] = useState(newPatient.ns_bolus_qty || '');
-    const [d10_bolus_given, set_d10_bolus_given] = useState(newPatient.d10_bolus_given || false);
-    const [init_blood_glucose, set_init_blood_glucose] = useState(newPatient.init_blood_glucose || '');
-    const [d10_bolus_qty, set_d10_bolus_qty] = useState(newPatient.d10_bolus_qty || '');
 
     useEffect(() => {
         newPatient.ns_bolus_given && set_ns_bolus_given(newPatient.ns_bolus_given);
@@ -30,59 +16,8 @@ function BolusPage() {
         newPatient.d10_bolus_qty && set_d10_bolus_qty(newPatient.d10_bolus_qty);
     }, [newPatient]);
 
-    const updatePatient = payload => {
-
-        axios.post('/api/patients/boluses/', payload)
-            .then(result => {
-                console.log('Updated bolus info for patient:', newPatient.uuid);
-            }
-            ).catch(error => {
-                console.log('Updated patient failed:', error);
-            });
-    };
-
-    const updatePatientCache = (event) => {
-        event.preventDefault();
-
-        // If NS Bolus Given is unchecked, clear out the details
-        if (!ns_bolus_given) {
-            set_bp_systolic_actual(0);
-            set_bp_systolic_actual(0);
-            set_bp_diastolic_actual(0);
-            set_map_actual(0);
-            set_ns_bolus_qty(0);
-        };
-
-        // If D10 Bolus Given is unchecked, clear out the details
-        if (!d10_bolus_given) {
-            set_init_blood_glucose(0);
-            set_d10_bolus_qty(0);
-        };
-
-        let payload = {
-            ns_bolus_given,
-            bp_systolic_actual: Number(bp_systolic_actual),
-            bp_diastolic_actual: Number(bp_diastolic_actual),
-            map_actual: Number(map_actual),
-            ns_bolus_qty: Number(ns_bolus_qty),
-            d10_bolus_given: d10_bolus_given,
-            init_blood_glucose: Number(init_blood_glucose),
-            d10_bolus_qty: Number(d10_bolus_qty)
-        };
-
-        dispatch({
-            type: 'NEW_PATIENT_APPEND_CACHE',
-            payload: payload
-        });
-
-        payload.uuid = newPatient.uuid;
-
-        updatePatient(payload);
-        history.push('/calculated');
-    };
-
     return (
-        <form className="formPanel" onSubmit={updatePatientCache}>
+        <form className="formPanel">
 
             <fieldset>
                 <legend>NS Bolus</legend>
@@ -212,10 +147,8 @@ function BolusPage() {
                 }
             </fieldset>
 
-            <input className="btn" type="submit" value="Add Details" />
-
         </form>
     );
 }
 
-export default BolusPage;
+export default BolusInfo;

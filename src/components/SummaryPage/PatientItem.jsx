@@ -8,15 +8,13 @@ function PatientItem({ patientSummary }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const user = useSelector(store => store.user);
-
   function fetchPatientDetails(patientSummary) {
 
     const uuid = patientSummary.uuid;
 
     axios.get('/api/patients/' + uuid)
       .then(result => {
-        // result.data = {uuid, anonymous_id, birth_weight, birth_weight_actual, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc_bottom, bp_systolic_actual, bp_diastolic_calc_bottom, bp_diastolic_actual, map_calc_bottom, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes}
+        // result.data = {uuid, anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc_bottom, bp_systolic_actual, bp_diastolic_calc_bottom, bp_diastolic_actual, map_calc_bottom, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes}
         dispatch({ type: 'EXISTING_PATIENT_CALCULATE', payload: result.data });
       })
       .catch(err => {
@@ -31,7 +29,7 @@ function PatientItem({ patientSummary }) {
 
     fetchPatientDetails(patientSummary);
 
-    history.push('/bolus');
+    history.push('/details');
   };
 
   // patient.created_at comes in as a string, so we'll turn it into a Date object.

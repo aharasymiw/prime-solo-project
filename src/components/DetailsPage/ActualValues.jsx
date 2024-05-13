@@ -1,69 +1,39 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { round1 } from '../../fe_utils/fe_utils'
-import axios from 'axios';
 
-import './DetailsActualPage.css';
+import './ActualValues.css';
 
-function DetailsActualPage() {
+function ActualValues() {
 
-    const dispatch = useDispatch();
-    const history = useHistory();
-
+    // { anonymous_id, set_anonymous_id, ett_size_actual, set_ett_size_actual, ett_depth_actual, set_ett_depth_actual, uac_depth_actual, set_uac_depth_actual, uvc_depth_actual, set_uvc_depth_actual }
     const newPatient = useSelector(store => store.newPatient);
 
+    const [anonymous_id, set_anonymous_id] = useState(newPatient.anonymous_id);
+    const [ett_size_actual, set_ett_size_actual] = useState(newPatient.ett_size_actual || newPatient.ett_size_calc);
+    const [ett_depth_actual, set_ett_depth_actual] = useState(newPatient.ett_depth_actual || newPatient.ett_depth_weight_calc);
+    const [uac_depth_actual, set_uac_depth_actual] = useState(newPatient.uac_depth_actual || newPatient.uac_depth_calc);
+    const [uvc_depth_actual, set_uvc_depth_actual] = useState(newPatient.uvc_depth_actual || newPatient.uvc_depth_calc);
+
+
+    useEffect(() => {
+        newPatient.anonymous_id && set_anonymous_id(newPatient.anonymous_id);
+        newPatient.ett_size_actual && set_ett_size_actual(newPatient.ett_size_actual);
+        newPatient.ett_depth_actual && set_ett_depth_actual(newPatient.ett_depth_actual);
+        newPatient.uac_depth_actual && set_uac_depth_actual(newPatient.uac_depth_actual);
+        newPatient.uvc_depth_actual && set_uvc_depth_actual(newPatient.uvc_depth_actual);
+    }, [newPatient]);
+
     const ett_size_calc = newPatient.ett_size_calc;
-    const ett_depth_age_calc = newPatient.ett_depth_age_calc;
     const ett_depth_weight_calc = newPatient.ett_depth_weight_calc;
     const uac_depth_calc = newPatient.uac_depth_calc;
     const uvc_depth_calc = newPatient.uvc_depth_calc;
-
-    const [anonymous_id, set_anonymous_id] = useState(newPatient.anonymous_id);
-    const [ett_size_actual, set_ett_size_actual] = useState(newPatient.ett_size_actual || ett_size_calc);
-    const [ett_depth_actual, set_ett_depth_actual] = useState(newPatient.ett_depth_actual || ett_depth_weight_calc);
-    const [uac_depth_actual, set_uac_depth_actual] = useState(newPatient.uac_depth_actual || uac_depth_calc);
-    const [uvc_depth_actual, set_uvc_depth_actual] = useState(newPatient.uvc_depth_actual || uvc_depth_calc);
-
-
-    const updatePatient = payload => {
-
-        axios.post('/api/patients/details/', payload)
-            .then(result => {
-                console.log('Updated details for patient:', newPatient.uuid);
-            }
-            ).catch(error => {
-                console.log('Updated patient failed:', error);
-            });
-    };
-
-    const updatePatientCache = () => {
-
-        let payload = {
-            anonymous_id: anonymous_id,
-            ett_size_actual: Number(ett_size_actual),
-            ett_depth_actual: Number(ett_depth_actual),
-            uac_depth_actual: Number(uac_depth_actual),
-            uvc_depth_actual: Number(uvc_depth_actual),
-        };
-
-        dispatch({
-            type: 'NEW_PATIENT_APPEND_CACHE',
-            payload: payload
-        });
-
-        payload.uuid = newPatient.uuid;
-
-        updatePatient(payload);
-        history.push('/notes');
-    };
 
     return (
         <div className="container">
 
             <fieldset>
                 <legend>Details - Actual</legend>
-
 
                 <section id="details_intro">
                     <h4>Subject ID</h4>
@@ -92,6 +62,7 @@ function DetailsActualPage() {
                                 <td>
 
                                     <select
+                                        // defaultValue={ett_size_calc}
                                         value={ett_size_actual}
                                         onChange={e => set_ett_size_actual(e.target.value)}
                                     >
@@ -108,6 +79,7 @@ function DetailsActualPage() {
                                 <td>{ett_depth_weight_calc}</td>
                                 <td>
                                     <select
+                                        // defaultValue={ett_depth_weight_calc}
                                         value={ett_depth_actual}
                                         onChange={e => set_ett_depth_actual(e.target.value)}
                                     >
@@ -129,6 +101,7 @@ function DetailsActualPage() {
                                 <td>{round1(uac_depth_calc)}</td>
                                 <td>
                                     <select
+                                        // defaultValue={uac_depth_calc}
                                         value={uac_depth_actual}
                                         onChange={e => set_uac_depth_actual(e.target.value)}
                                     >
@@ -221,6 +194,7 @@ function DetailsActualPage() {
                                 <td>{round1(uvc_depth_calc)}</td>
                                 <td>
                                     <select
+                                        // defaultValue={uvc_depth_calc}
                                         value={uvc_depth_actual}
                                         onChange={e => set_uvc_depth_actual(e.target.value)}
                                     >
@@ -281,15 +255,6 @@ function DetailsActualPage() {
                         </tbody>
                     </table>
 
-                    <input
-                        className="btn"
-                        type="button"
-                        value="Notes"
-                        onClick={() => {
-                            updatePatientCache();
-                        }}
-                    />
-
                 </section>
             </fieldset>
 
@@ -297,4 +262,4 @@ function DetailsActualPage() {
     );
 }
 
-export default DetailsActualPage;
+export default ActualValues;

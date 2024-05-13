@@ -14,9 +14,7 @@ import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
-import BolusPage from '../BolusPage/BolusPage';
-import DetailsActualPage from '../DetailsActualPage/DetailsActualPage';
-import NotesPage from '../NotesPage/NotesPage';
+import DetailsPage from '../DetailsPage/DetailsPage';
 import CalculatorPage from '../CalculatorPage/CalculatorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import LoginPage from '../LoginPage/LoginPage';
@@ -53,23 +51,9 @@ function App() {
 
           <ProtectedRoute
             exact
-            path="/bolus"
+            path="/details"
           >
-            <BolusPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute
-            exact
-            path="/calculated"
-          >
-            <DetailsActualPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute
-            exact
-            path="/notes"
-          >
-            <NotesPage />
+            <DetailsPage />
           </ProtectedRoute>
 
           <ProtectedRoute

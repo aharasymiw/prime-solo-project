@@ -11,7 +11,6 @@ function Nav() {
 
   const reset = () => {
     dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
-
   }
 
   return (

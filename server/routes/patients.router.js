@@ -37,7 +37,7 @@ router.get('/:patient_uuid', rejectUnauthenticated, (req, res, next) => {
 
   const queryText = `
       SELECT
-        uuid, anonymous_id, birth_weight, birth_weight_actual, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc_bottom, bp_systolic_calc_mid, bp_systolic_calc_top, bp_systolic_actual, bp_diastolic_calc_bottom, bp_diastolic_calc_mid, bp_diastolic_calc_top, bp_diastolic_actual, map_calc_bottom, map_calc_mid, map_calc_top, map_actual, pulse_pressure_calc_bottom, pulse_pressure_calc_mid, pulse_pressure_calc_top, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes
+        uuid, anonymous_id, birth_weight, ga_weeks, ga_days, ett_size_calc, ett_size_actual, ett_depth_weight_calc, ett_depth_age_calc, ett_depth_actual, uac_depth_calc, uac_depth_actual, uvc_depth_calc, uvc_depth_actual, ns_bolus_given, bp_systolic_calc_bottom, bp_systolic_calc_mid, bp_systolic_calc_top, bp_systolic_actual, bp_diastolic_calc_bottom, bp_diastolic_calc_mid, bp_diastolic_calc_top, bp_diastolic_actual, map_calc_bottom, map_calc_mid, map_calc_top, map_actual, pulse_pressure_calc_bottom, pulse_pressure_calc_mid, pulse_pressure_calc_top, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, notes
       FROM
         "patients" 
       WHERE
@@ -60,6 +60,8 @@ router.post('/', rejectUnauthenticated, (req, res, next) => {
 
   let user = req.user;
   let newPatient = req.body;
+
+  console.log('newPatient', newPatient);
 
   const anonymous_id = generateRandomLetter() + generateRandomNumber(1, 10000);
 
@@ -104,53 +106,19 @@ router.post('/', rejectUnauthenticated, (req, res, next) => {
 
 });
 
-router.post('/boluses', rejectUnauthenticated, (req, res, next) => {
-
-  let user = req.user;
-  let newBolus = req.body;
-
-  const ns_bolus_given = newBolus.ns_bolus_given;
-  const bp_systolic_actual = newBolus.bp_systolic_actual;
-  const bp_diastolic_actual = newBolus.bp_diastolic_actual;
-  const map_actual = newBolus.map_actual;
-  const ns_bolus_qty = newBolus.ns_bolus_qty;
-  const d10_bolus_given = newBolus.d10_bolus_given;
-  const init_blood_glucose = newBolus.init_blood_glucose;
-  const d10_bolus_qty = newBolus.d10_bolus_qty;
-  const patient_uuid = newBolus.uuid;
-
-  const updated_by = user.uuid;
-
-  const queryText = `UPDATE "patients" SET 
-      ns_bolus_given=$1, bp_systolic_actual=$2, bp_diastolic_actual=$3, map_actual=$4, ns_bolus_qty=$5, d10_bolus_given=$6, init_blood_glucose=$7, d10_bolus_qty=$8, updated_by=$9
-    WHERE
-      managed_by=$9 AND uuid=$10
-    RETURNING
-      uuid;`;
-  pool
-    .query(queryText, [ns_bolus_given, bp_systolic_actual, bp_diastolic_actual, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, updated_by, patient_uuid])
-    .then((dbResponse) => {
-      res.sendStatus(201);
-    })
-    .catch((err) => {
-      console.log('\n\n\n\n\n\nPatient update failed:  \n\n', err);
-      console.log('\n\n\n\n\n\n')
-      res.sendStatus(500);
-    });
-
-});
-
-router.post('/details', rejectUnauthenticated, (req, res, next) => {
+router.post('/actuals', rejectUnauthenticated, (req, res, next) => {
 
   let user = req.user;
   let newDetails = req.body;
+
+  console.log('newDetails', newDetails);
 
   const anonymous_id = newDetails.anonymous_id;
   const ett_size_actual = newDetails.ett_size_actual;
   const ett_depth_actual = newDetails.ett_depth_actual;
   const uac_depth_actual = newDetails.uac_depth_actual;
   const uvc_depth_actual = newDetails.uvc_depth_actual;
-  const patient_uuid = newDetails.uuid;
+  const patient_uuid = newDetails.patient_uuid;
 
   const updated_by = user.uuid;
 
@@ -167,7 +135,45 @@ router.post('/details', rejectUnauthenticated, (req, res, next) => {
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.log('\n\n\n\n\n\nPatient update failed: \n\n', err);
+      console.log('\n\n\n\n\n\nPatient newDetails update failed: \n\n', err);
+      console.log('\n\n\n\n\n\n')
+      res.sendStatus(500);
+    });
+
+});
+
+router.post('/boluses', rejectUnauthenticated, (req, res, next) => {
+
+  let user = req.user;
+  let newBolus = req.body;
+
+  console.log('newBolus', newBolus);
+
+  const ns_bolus_given = newBolus.ns_bolus_given;
+  const bp_systolic_actual = newBolus.bp_systolic_actual;
+  const bp_diastolic_actual = newBolus.bp_diastolic_actual;
+  const map_actual = newBolus.map_actual;
+  const ns_bolus_qty = newBolus.ns_bolus_qty;
+  const d10_bolus_given = newBolus.d10_bolus_given;
+  const init_blood_glucose = newBolus.init_blood_glucose;
+  const d10_bolus_qty = newBolus.d10_bolus_qty;
+  const patient_uuid = newBolus.patient_uuid;
+
+  const updated_by = user.uuid;
+
+  const queryText = `UPDATE "patients" SET 
+      ns_bolus_given=$1, bp_systolic_actual=$2, bp_diastolic_actual=$3, map_actual=$4, ns_bolus_qty=$5, d10_bolus_given=$6, init_blood_glucose=$7, d10_bolus_qty=$8, updated_by=$9
+    WHERE
+      managed_by=$9 AND uuid=$10
+    RETURNING
+      uuid;`;
+  pool
+    .query(queryText, [ns_bolus_given, bp_systolic_actual, bp_diastolic_actual, map_actual, ns_bolus_qty, d10_bolus_given, init_blood_glucose, d10_bolus_qty, updated_by, patient_uuid])
+    .then((dbResponse) => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log('\n\n\n\n\n\nPatient newBolus update failed:  \n\n', err);
       console.log('\n\n\n\n\n\n')
       res.sendStatus(500);
     });
@@ -177,11 +183,12 @@ router.post('/details', rejectUnauthenticated, (req, res, next) => {
 router.post('/notes', rejectUnauthenticated, (req, res, next) => {
 
   let user = req.user;
-
   let newNotes = req.body;
 
+  console.log('newNotes', newNotes);
+
   const notes = newNotes.notes;
-  const patient_uuid = newNotes.uuid;
+  const patient_uuid = newNotes.patient_uuid;
 
   const updated_by = user.uuid;
 
@@ -197,7 +204,7 @@ router.post('/notes', rejectUnauthenticated, (req, res, next) => {
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.log('\n\n\n\n\n\nPatient update failed: \n\n', err);
+      console.log('\n\n\n\n\n\nPatient notes update failed: \n\n', err);
       console.log('\n\n\n\n\n\n')
       res.sendStatus(500);
     });

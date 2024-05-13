@@ -12,9 +12,9 @@ function CalculatorForm() {
     const [ga_days, set_ga_days] = useState(newPatient.ga_days || '');
 
     useEffect(() => {
-        newPatient.birth_weight && set_birth_weight(newPatient.birth_weight);
-        newPatient.ga_weeks && set_ga_weeks(newPatient.ga_weeks);
-        newPatient.ga_days && set_ga_days(newPatient.ga_days);
+        newPatient.birth_weight ? set_birth_weight(newPatient.birth_weight) : set_birth_weight('');
+        newPatient.ga_weeks ? set_ga_weeks(newPatient.ga_weeks) : set_ga_weeks('');
+        newPatient.ga_days ? set_ga_days(newPatient.ga_days) : set_ga_days('');
     }, [newPatient]);
 
 
