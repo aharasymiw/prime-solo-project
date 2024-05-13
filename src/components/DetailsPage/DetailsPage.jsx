@@ -17,11 +17,11 @@ function DetailsPage() {
     const patient_uuid = newPatient.uuid;
 
     // Actual values variables
-    // const [anonymous_id, set_anonymous_id] = useState(newPatient.anonymous_id);
-    // const [ett_size_actual, set_ett_size_actual] = useState(newPatient.ett_size_actual || newPatient.ett_size_calc);
-    // const [ett_depth_actual, set_ett_depth_actual] = useState(newPatient.ett_depth_actual || newPatient.ett_depth_weight_calc);
-    // const [uac_depth_actual, set_uac_depth_actual] = useState(newPatient.uac_depth_actual || newPatient.uac_depth_calc);
-    // const [uvc_depth_actual, set_uvc_depth_actual] = useState(newPatient.uvc_depth_actual || newPatient.uvc_depth_calc);
+    const [anonymous_id, set_anonymous_id] = useState(newPatient.anonymous_id);
+    const [ett_size_actual, set_ett_size_actual] = useState(newPatient.ett_size_actual || newPatient.ett_size_calc);
+    const [ett_depth_actual, set_ett_depth_actual] = useState(newPatient.ett_depth_actual || newPatient.ett_depth_weight_calc);
+    const [uac_depth_actual, set_uac_depth_actual] = useState(newPatient.uac_depth_actual || newPatient.uac_depth_calc);
+    const [uvc_depth_actual, set_uvc_depth_actual] = useState(newPatient.uvc_depth_actual || newPatient.uvc_depth_calc);
 
     // Bolus variables
     const [ns_bolus_given, set_ns_bolus_given] = useState(newPatient.ns_bolus_given || false);
@@ -39,8 +39,6 @@ function DetailsPage() {
     const saveActuals = (actuals_payload) => {
         actuals_payload.patient_uuid = patient_uuid;
 
-        console.log('actuals_payload', actuals_payload);
-
         axios.post('/api/patients/actuals/', actuals_payload)
             .then(result => {
                 console.log('Updated actuals info for patient:', patient_uuid);
@@ -53,8 +51,6 @@ function DetailsPage() {
     const saveBolus = (bolus_payload) => {
         bolus_payload.patient_uuid = patient_uuid;
 
-        console.log('bolus_payload', bolus_payload);
-
         axios.post('/api/patients/boluses/', bolus_payload)
             .then(result => {
                 console.log('Updated bolus info for patient:', patient_uuid);
@@ -66,8 +62,6 @@ function DetailsPage() {
 
     const saveNotes = (notes_payload) => {
         notes_payload.patient_uuid = patient_uuid;
-
-        console.log('notes_payload', notes_payload);
 
         axios.post('/api/patients/notes/', notes_payload)
             .then(result => {
@@ -87,12 +81,13 @@ function DetailsPage() {
     const updatePatientCache = () => {
 
         let actuals_payload = {
-            anonymous_id: anonymous_id,
+            anonymous_id,
             ett_size_actual: Number(ett_size_actual),
             ett_depth_actual: Number(ett_depth_actual),
             uac_depth_actual: Number(uac_depth_actual),
             uvc_depth_actual: Number(uvc_depth_actual),
         };
+
         dispatch({ type: 'NEW_PATIENT_APPEND_CACHE', payload: actuals_payload });
 
         // If NS Bolus Given is unchecked, clear out the details
@@ -141,8 +136,7 @@ function DetailsPage() {
 
     return (
         <>
-            <ActualValues />
-            {/* <ActualValues anonymous_id={anonymous_id} set_anonymous_id={set_anonymous_id} ett_size_actual={ett_size_actual} set_ett_size_actual={set_ett_size_actual} ett_depth_actual={ett_depth_actual} set_ett_depth_actual={set_ett_depth_actual} uac_depth_actual={uac_depth_actual} set_uac_depth_actual={set_uac_depth_actual} uvc_depth_actual={uvc_depth_actual} set_uvc_depth_actual={set_uvc_depth_actual} /> */}
+            <ActualValues anonymous_id={anonymous_id} set_anonymous_id={set_anonymous_id} ett_size_actual={ett_size_actual} set_ett_size_actual={set_ett_size_actual} ett_depth_actual={ett_depth_actual} set_ett_depth_actual={set_ett_depth_actual} uac_depth_actual={uac_depth_actual} set_uac_depth_actual={set_uac_depth_actual} uvc_depth_actual={uvc_depth_actual} set_uvc_depth_actual={set_uvc_depth_actual} />
             <BolusInfo ns_bolus_given={ns_bolus_given} set_ns_bolus_given={set_ns_bolus_given} bp_systolic_actual={bp_systolic_actual} set_bp_systolic_actual={set_bp_systolic_actual} bp_diastolic_actual={bp_diastolic_actual} set_bp_diastolic_actual={set_bp_diastolic_actual} map_actual={map_actual} set_map_actual={set_map_actual} ns_bolus_qty={ns_bolus_qty} set_ns_bolus_qty={set_ns_bolus_qty} d10_bolus_given={d10_bolus_given} set_d10_bolus_given={set_d10_bolus_given} init_blood_glucose={init_blood_glucose} set_init_blood_glucose={set_init_blood_glucose} d10_bolus_qty={d10_bolus_qty} set_d10_bolus_qty={set_d10_bolus_qty} />
             <Notes notes={notes} set_notes={set_notes} />
 
