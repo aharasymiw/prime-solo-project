@@ -1,28 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { round1 } from '../../fe_utils/fe_utils'
-import axios from 'axios';
 
 import './ActualValues.css';
 
-function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett_size_actual, ett_depth_actual, set_ett_depth_actual, uac_depth_actual, set_uac_depth_actual, uvc_depth_actual, set_uvc_depth_actual }) {
-
-    // 
-    const newPatient = useSelector(store => store.newPatient);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        newPatient.anonymous_id && set_anonymous_id(newPatient.anonymous_id);
-        newPatient.ett_size_actual && set_ett_size_actual(newPatient.ett_size_actual);
-        newPatient.ett_depth_actual && set_ett_depth_actual(newPatient.ett_depth_actual);
-        newPatient.uac_depth_actual && set_uac_depth_actual(newPatient.uac_depth_actual);
-        newPatient.uvc_depth_actual && set_uvc_depth_actual(newPatient.uvc_depth_actual);
-    }, [newPatient]);
+function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett_size_actual, ett_depth_actual, set_ett_depth_actual, uac_depth_actual, set_uac_depth_actual, uvc_depth_actual, set_uvc_depth_actual, ett_size_calc, ett_depth_weight_calc, uac_depth_calc, uvc_depth_calc }) {
 
     return (
-        <div className="container">
+        <div className="formPanel">
 
-            {newPatient.anonymous_id &&
+            {anonymous_id &&
                 <fieldset>
                     <legend>Details - Actual</legend>
 
@@ -49,7 +34,7 @@ function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett
                             <tbody>
                                 <tr>
                                     <td><p>ETT</p><p>Size</p></td>
-                                    <td>{newPatient.ett_size_calc}</td>
+                                    <td>{ett_size_calc}</td>
                                     <td>
 
                                         <select
@@ -67,7 +52,7 @@ function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett
                                 </tr>
                                 <tr>
                                     <td><p>ETT</p><p>Depth</p></td>
-                                    <td>{newPatient.ett_depth_weight_calc}</td>
+                                    <td>{ett_depth_weight_calc}</td>
                                     <td>
                                         <select
                                             // defaultValue={ett_depth_weight_calc}
@@ -89,7 +74,7 @@ function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett
                                 </tr>
                                 <tr>
                                     <td><p>UAC</p><p>Depth</p></td>
-                                    <td>{round1(newPatient.uac_depth_calc)}</td>
+                                    <td>{round1(uac_depth_calc)}</td>
                                     <td>
                                         <select
                                             // defaultValue={uac_depth_calc}
@@ -182,7 +167,7 @@ function ActualValues({ anonymous_id, set_anonymous_id, ett_size_actual, set_ett
                                 </tr>
                                 <tr>
                                     <td><p>UVC</p><p>Depth</p></td>
-                                    <td>{round1(newPatient.uvc_depth_calc)}</td>
+                                    <td>{round1(uvc_depth_calc)}</td>
                                     <td>
                                         <select
                                             // defaultValue={uvc_depth_calc}

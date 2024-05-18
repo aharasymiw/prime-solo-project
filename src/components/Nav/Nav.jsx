@@ -18,6 +18,7 @@ function Nav() {
       <NavLink to="/calculator" onClick={reset}>
         <h2 className="nav-title">NICU Calc</h2>
       </NavLink>
+
       <div>
         {/* If no user is logged in, show these links */}
         {!user.uuid && (
@@ -27,6 +28,9 @@ function Nav() {
               Calculator
             </Link>
 
+            <Link className="navLink" to="/reference">
+              Reference
+            </Link>
             <Link className="navLink" to="/login">
               Login
             </Link>
@@ -40,17 +44,15 @@ function Nav() {
               Calculator
             </Link>
 
+            <Link className="navLink" to="/reference">
+              Reference
+            </Link>
             {/* <Link className="navLink" to="/profile">
               Profile
             </Link> */}
-
             <LogOutButton className="navLink" />
           </>
         )}
-
-        <Link className="navLink" to="/about">
-          About
-        </Link>
       </div>
     </div>
   );

@@ -1,14 +1,5 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 function Notes({ notes, set_notes }) {
-
-    const newPatient = useSelector(store => store.newPatient);
-
-    useEffect(() => {
-        newPatient.notes && set_notes(newPatient.notes);
-    }, [newPatient]);
-
 
     return (
         <form className="formPanel">

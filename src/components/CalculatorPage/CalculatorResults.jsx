@@ -130,8 +130,15 @@ function CalculatorResults() {
 
             <section className='footnote'>
                 <p>Epinephrine Concentration: 0.1 mg/mL = 1 mg / 10 mL</p>
-                <p>ETT size ≈ GA / 10</p>
-                <p>ETT Insertion ≈ weight in kg(s) + 6</p>
+                <button
+                    type="button"
+                    className="btn btn_asLink"
+                    onClick={() => {
+                        history.push('/reference');
+                    }}
+                >
+                    Calculation Reference
+                </button>
             </section>
 
             {

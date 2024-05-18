@@ -99,9 +99,8 @@ Form Treatment
   box-sizing: border-box;
   width: 400px;
   max-width: 100%;
-  padding: 25px;
+  padding: 0px 25px 25px 25px;
   margin: 0 auto 20px;
-  background-color: #efefef;
   border-radius: 3px;
   /* box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4); */
 }
@@ -109,7 +108,7 @@ Form Treatment
 textarea {
   font-size: 16px;
   width: 300px;
-  height: 450px;
+  height: 175px;
 }
 
 input {

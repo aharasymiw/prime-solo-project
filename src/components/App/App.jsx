@@ -13,7 +13,7 @@ import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
-import AboutPage from '../AboutPage/AboutPage';
+import ReferencePage from '../ReferencePage/ReferencePage';
 import DetailsPage from '../DetailsPage/DetailsPage';
 import CalculatorPage from '../CalculatorPage/CalculatorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
@@ -40,13 +40,13 @@ function App() {
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
           <Redirect exact from="/" to="/calculator" />
 
-          {/* Visiting localhost:3000/about will show the about page. */}
+          {/* Visiting localhost:3000/reference will show the about page. */}
           <Route
-            // shows AboutPage at all times (logged in or not)
+            // shows ReferencePage at all times (logged in or not)
             exact
-            path="/about"
+            path="/reference"
           >
-            <AboutPage />
+            <ReferencePage />
           </Route>
 
           <ProtectedRoute
@@ -64,7 +64,7 @@ function App() {
           </ProtectedRoute>
 
           <Route
-            // shows AboutPage at all times (logged in or not)
+            // shows ReferencePage at all times (logged in or not)
             exact
             path="/calculator"
           >

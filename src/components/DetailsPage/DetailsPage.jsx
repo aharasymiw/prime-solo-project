@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -35,6 +35,26 @@ function DetailsPage() {
 
     // Notes variables
     const [notes, set_notes] = useState(newPatient.notes || '');
+
+    useEffect(() => {
+        newPatient.anonymous_id && set_anonymous_id(newPatient.anonymous_id);
+        newPatient.ett_size_actual && set_ett_size_actual(newPatient.ett_size_actual);
+        newPatient.ett_depth_actual && set_ett_depth_actual(newPatient.ett_depth_actual);
+        newPatient.uac_depth_actual && set_uac_depth_actual(newPatient.uac_depth_actual);
+        newPatient.uvc_depth_actual && set_uvc_depth_actual(newPatient.uvc_depth_actual);
+        newPatient.ns_bolus_given && set_ns_bolus_given(newPatient.ns_bolus_given);
+        newPatient.bp_systolic_actual && set_bp_systolic_actual(newPatient.bp_systolic_actual);
+        newPatient.bp_diastolic_actual && set_bp_diastolic_actual(newPatient.bp_diastolic_actual);
+        newPatient.map_actual && set_map_actual(newPatient.map_actual);
+        newPatient.ns_bolus_qty && set_ns_bolus_qty(newPatient.ns_bolus_qty);
+        newPatient.d10_bolus_given && set_d10_bolus_given(newPatient.d10_bolus_given);
+        newPatient.init_blood_glucose && set_init_blood_glucose(newPatient.init_blood_glucose);
+        newPatient.d10_bolus_qty && set_d10_bolus_qty(newPatient.d10_bolus_qty);
+        newPatient.notes && set_notes(newPatient.notes);
+    }, [newPatient]);
+
+
+
 
     const saveActuals = (actuals_payload) => {
         actuals_payload.patient_uuid = patient_uuid;
@@ -136,29 +156,34 @@ function DetailsPage() {
 
     return (
         <>
-            <ActualValues anonymous_id={anonymous_id} set_anonymous_id={set_anonymous_id} ett_size_actual={ett_size_actual} set_ett_size_actual={set_ett_size_actual} ett_depth_actual={ett_depth_actual} set_ett_depth_actual={set_ett_depth_actual} uac_depth_actual={uac_depth_actual} set_uac_depth_actual={set_uac_depth_actual} uvc_depth_actual={uvc_depth_actual} set_uvc_depth_actual={set_uvc_depth_actual} />
+            <ActualValues anonymous_id={anonymous_id} set_anonymous_id={set_anonymous_id} ett_size_actual={ett_size_actual} set_ett_size_actual={set_ett_size_actual} ett_depth_actual={ett_depth_actual} set_ett_depth_actual={set_ett_depth_actual} uac_depth_actual={uac_depth_actual} set_uac_depth_actual={set_uac_depth_actual} uvc_depth_actual={uvc_depth_actual} set_uvc_depth_actual={set_uvc_depth_actual} ett_size_calc={newPatient.ett_size_calc} ett_depth_weight_calc={newPatient.ett_depth_weight_calc} uac_depth_calc={newPatient.uac_depth_calc} uvc_depth_calc={newPatient.uvc_depth_calc} />
             <BolusInfo ns_bolus_given={ns_bolus_given} set_ns_bolus_given={set_ns_bolus_given} bp_systolic_actual={bp_systolic_actual} set_bp_systolic_actual={set_bp_systolic_actual} bp_diastolic_actual={bp_diastolic_actual} set_bp_diastolic_actual={set_bp_diastolic_actual} map_actual={map_actual} set_map_actual={set_map_actual} ns_bolus_qty={ns_bolus_qty} set_ns_bolus_qty={set_ns_bolus_qty} d10_bolus_given={d10_bolus_given} set_d10_bolus_given={set_d10_bolus_given} init_blood_glucose={init_blood_glucose} set_init_blood_glucose={set_init_blood_glucose} d10_bolus_qty={d10_bolus_qty} set_d10_bolus_qty={set_d10_bolus_qty} />
             <Notes notes={notes} set_notes={set_notes} />
 
-            <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                    updatePatientCache();
-                    fetchPatientList();
-                    history.push('/summary');
-                }}
-            >Save & Summary</button>
-
-            <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                    updatePatientCache();
-                    dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
-                    history.push('/calculator');
-                }}
-            >Save & New</button>
+            <div className="formPanel">
+                <div>
+                    <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                            updatePatientCache();
+                            fetchPatientList();
+                            history.push('/summary');
+                        }}
+                    >Save & Summary</button>
+                </div>
+                <div>
+                    <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                            updatePatientCache();
+                            dispatch({ type: 'NEW_PATIENT_CLEAR_CACHE' });
+                            history.push('/calculator');
+                        }}
+                    >Save & New</button>
+                </div>
+            </div>
         </>
     );
 }

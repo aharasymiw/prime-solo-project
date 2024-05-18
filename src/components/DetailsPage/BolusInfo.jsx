@@ -1,20 +1,5 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 function BolusInfo({ ns_bolus_given, set_ns_bolus_given, bp_systolic_actual, set_bp_systolic_actual, bp_diastolic_actual, set_bp_diastolic_actual, map_actual, set_map_actual, ns_bolus_qty, set_ns_bolus_qty, d10_bolus_given, set_d10_bolus_given, init_blood_glucose, set_init_blood_glucose, d10_bolus_qty, set_d10_bolus_qty }) {
-
-    const newPatient = useSelector(store => store.newPatient);
-
-    useEffect(() => {
-        newPatient.ns_bolus_given && set_ns_bolus_given(newPatient.ns_bolus_given);
-        newPatient.bp_systolic_actual && set_bp_systolic_actual(newPatient.bp_systolic_actual);
-        newPatient.bp_diastolic_actual && set_bp_diastolic_actual(newPatient.bp_diastolic_actual);
-        newPatient.map_actual && set_map_actual(newPatient.map_actual);
-        newPatient.ns_bolus_qty && set_ns_bolus_qty(newPatient.ns_bolus_qty);
-        newPatient.d10_bolus_given && set_d10_bolus_given(newPatient.d10_bolus_given);
-        newPatient.init_blood_glucose && set_init_blood_glucose(newPatient.init_blood_glucose);
-        newPatient.d10_bolus_qty && set_d10_bolus_qty(newPatient.d10_bolus_qty);
-    }, [newPatient]);
 
     return (
         <form className="formPanel">
